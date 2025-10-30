@@ -1,705 +1,2726 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0023)https://ai.safiery.com/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safiery Quote Management</title>
-    <script src="https://cdn.tailwindcss.com" type="0a289f235e50cac5cfa48845-text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" type="0a289f235e50cac5cfa48845-text/javascript"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Visual Digital Switching Configurator</title>
+    <script src="./index_files/saved_resource" type="text/javascript"></script>
+    <script src="./index_files/html2canvas.min.js.download" type="text/javascript"></script>
+    <link href="./index_files/css2" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .search-results {
-            max-height: 200px;
-            overflow-y: auto;
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .primary-orange { background-color: #e28325; }
+        .primary-orange-text { color: #e28325; }
+        .secondary-blue { background-color: #3a6dae; }
+        .secondary-blue-text { color: #3a6dae; }
+
+        .component-in-palette { cursor: grab; }
+        .component-on-canvas { 
+            position: absolute; 
+            cursor: move; 
+            transition: transform 0.2s;
+            background-color: transparent; /* Blends with background */
+            padding: 0.25rem; /* Reduced padding */
+        }
+        .component-on-canvas:active {
+            cursor: grabbing;
+            z-index: 1000;
+        }
+        .boat-canvas {
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gemini-btn {
+            background-color: #8e44ad;
+            color: white;
+            flex-shrink: 0;
+        }
+        .gemini-btn:hover {
+            background-color: #9b59b6;
+        }
+        .gemini-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #canBusCanvas {
+            position: relative;
+            min-height: 400px;
+            background-color: #f3f4f6;
         }
     </style>
-</head>
-<body class="bg-gray-100">
-    
-    <div class="container mx-auto p-6">
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <div class="flex justify-between items-center mb-4">
-                <h1 class="text-3xl font-bold text-blue-900">💰 Quote Management</h1>
-                <div class="space-x-2">
-                    <a class='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600' href='/'>← Back to Configurator</a>
-                    <button id="newQuoteBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+ New Quote</button>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.fixed{position:fixed}.relative{position:relative}.inset-0{inset:0px}.z-50{z-index:50}.z-\[2000\]{z-index:2000}.z-\[3000\]{z-index:3000}.z-\[4000\]{z-index:4000}.my-2{margin-top:0.5rem;margin-bottom:0.5rem}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-1{margin-top:0.25rem}.ml-5{margin-left:1.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-screen{height:100vh}.h-32{height:8rem}.h-96{height:24rem}.h-full{height:100%}.h-12{height:3rem}.max-h-96{max-height:24rem}.max-h-\[90vh\]{max-height:90vh}.max-h-\[95vh\]{max-height:95vh}.w-full{width:100%}.w-screen{width:100vw}.w-16{width:4rem}.max-w-2xl{max-width:42rem}.max-w-4xl{max-width:56rem}.max-w-6xl{max-width:72rem}.max-w-7xl{max-width:80rem}.max-w-lg{max-width:32rem}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-grow{flex-grow:1}.scale-100{--tw-scale-x:1;--tw-scale-y:1;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.transform{transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.list-decimal{list-style-type:decimal}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.space-x-2 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.5rem * var(--tw-space-x-reverse));margin-left:calc(0.5rem * calc(1 - var(--tw-space-x-reverse)))}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-x-3 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(0.75rem * var(--tw-space-x-reverse));margin-left:calc(0.75rem * calc(1 - var(--tw-space-x-reverse)))}.overflow-auto{overflow:auto}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded{border-radius:0.25rem}.border-2{border-width:2px}.border{border-width:1px}.border-l{border-left-width:1px}.border-l-4{border-left-width:4px}.border-r{border-right-width:1px}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity, 1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219 / var(--tw-border-opacity, 1))}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-purple-200{--tw-border-opacity:1;border-color:rgb(233 213 255 / var(--tw-border-opacity, 1))}.border-yellow-400{--tw-border-opacity:1;border-color:rgb(250 204 21 / var(--tw-border-opacity, 1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.bg-gray-900{--tw-bg-opacity:1;background-color:rgb(17 24 39 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251 / var(--tw-bg-opacity, 1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94 / var(--tw-bg-opacity, 1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.bg-indigo-500{--tw-bg-opacity:1;background-color:rgb(99 102 241 / var(--tw-bg-opacity, 1))}.bg-purple-600{--tw-bg-opacity:1;background-color:rgb(147 51 234 / var(--tw-bg-opacity, 1))}.bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68 / var(--tw-bg-opacity, 1))}.bg-yellow-50{--tw-bg-opacity:1;background-color:rgb(254 252 232 / var(--tw-bg-opacity, 1))}.bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8 / var(--tw-bg-opacity, 1))}.bg-opacity-75{--tw-bg-opacity:0.75}.object-cover{object-fit:cover}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-8{padding:2rem}.p-2{padding:0.5rem}.p-6{padding:1.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.text-center{text-align:center}.text-right{text-align:right}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-semibold{font-weight:600}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128 / var(--tw-text-opacity, 1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:border-orange-400:hover{--tw-border-opacity:1;border-color:rgb(251 146 60 / var(--tw-border-opacity, 1))}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-blue-800:hover{--tw-bg-opacity:1;background-color:rgb(30 64 175 / var(--tw-bg-opacity, 1))}.hover\:bg-green-600:hover{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.hover\:bg-green-700:hover{--tw-bg-opacity:1;background-color:rgb(21 128 61 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-600:hover{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.hover\:bg-orange-600:hover{--tw-bg-opacity:1;background-color:rgb(234 88 12 / var(--tw-bg-opacity, 1))}.hover\:bg-purple-700:hover{--tw-bg-opacity:1;background-color:rgb(126 34 206 / var(--tw-bg-opacity, 1))}.hover\:bg-red-600:hover{--tw-bg-opacity:1;background-color:rgb(220 38 38 / var(--tw-bg-opacity, 1))}.hover\:bg-yellow-600:hover{--tw-bg-opacity:1;background-color:rgb(202 138 4 / var(--tw-bg-opacity, 1))}.hover\:text-red-500:hover{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:border-purple-500:focus{--tw-border-opacity:1;border-color:rgb(168 85 247 / var(--tw-border-opacity, 1))}.focus\:ring-purple-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(168 85 247 / var(--tw-ring-opacity, 1))}@media (min-width: 768px){.md\:w-1\/4{width:25%}.md\:w-1\/5{width:20%}.md\:w-auto{width:auto}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:space-y-0 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0px * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0px * var(--tw-space-y-reverse))}}@media (min-width: 1024px){.lg\:grid-cols-5{grid-template-columns:repeat(5, minmax(0, 1fr))}}</style></head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Main Container -->
+    <div id="app" class="h-screen w-screen flex flex-col">
+        
+        <!-- Welcome Modal -->
+        <div id="welcomeModal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 z-50 hidden">
+            <div class="bg-white rounded-lg shadow-2xl p-8 max-w-2xl w-full text-center transform transition-all scale-100">
+                <h1 class="text-3xl font-bold mb-4 secondary-blue-text">Welcome to the Configurator</h1>
+                <p class="text-gray-600 mb-8">Select a boat hull to begin or upload a previous configuration.</p>
+                
+                <!-- Boat Length Input -->
+                <div class="mb-6">
+                    <label class="block text-lg font-semibold mb-2">Boat/RV Length (meters):</label>
+                    <input type="number" id="boatLengthInput" class="border-2 border-gray-300 rounded-lg p-3 w-full text-center text-xl" value="10" min="3" max="50" step="0.5">
+                    <p class="text-sm text-gray-500 mt-1">This helps calculate accurate cable lengths for your CAN-bus network</p>
                 </div>
-            </div>
-            
-            <div id="quotesListContainer">
-                <!-- Quotes will be listed here -->
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                    <!-- Boat Options -->
+                    <div class="boat-option border-2 border-gray-200 rounded-lg p-4 hover:border-orange-400 hover:shadow-lg transition cursor-pointer" data-boat="catamaran">
+                        <img src="http://localhost/safiery-ai/index_files/catamaran.png" alt="Catamaran" class="w-full h-32 object-cover rounded-md mb-2" onerror="this.onerror=null;this.src=&#39;https://placehold.co/300x200/cccccc/333333?text=Catamaran&#39;;">
+                        <h3 class="font-semibold text-lg">Catamaran</h3>
+                    </div>
+                    <div class="boat-option border-2 border-gray-200 rounded-lg p-4 hover:border-orange-400 hover:shadow-lg transition cursor-pointer" data-boat="monohull">
+                        <img src="http://localhost/safiery-ai/index_files/monohull.png" alt="Monohull Yacht" class="w-full h-32 object-cover rounded-md mb-2" onerror="this.onerror=null;this.src=&#39;https://placehold.co/300x200/cccccc/333333?text=Monohull+Yacht&#39;;">
+                        <h3 class="font-semibold text-lg">Monohull Yacht</h3>
+                    </div>
+                    <div class="boat-option border-2 border-gray-200 rounded-lg p-4 hover:border-orange-400 hover:shadow-lg transition cursor-pointer" data-boat="powerboat">
+                        <img src="http://localhost/safiery-ai//index_files/powerboat.png" alt="Power Boat" class="w-full h-32 object-cover rounded-md mb-2" onerror="this.onerror=null;this.src=&#39;https://placehold.co/300x200/cccccc/333333?text=Power+Boat&#39;;">
+                        <h3 class="font-semibold text-lg">Power Boat</h3>
+                    </div>
+                    <div class="boat-option border-2 border-gray-200 rounded-lg p-4 hover:border-orange-400 hover:shadow-lg transition cursor-pointer" data-boat="caravan">
+                        <img src="http://localhost/safiery-ai/index_files/caravan.png" alt="Caravan" class="w-full h-32 object-cover rounded-md mb-2" onerror="this.onerror=null;this.src=&#39;https://placehold.co/300x200/cccccc/333333?text=Caravan&#39;;">
+                        <h3 class="font-semibold text-lg">Caravan</h3>
+                    </div>
+                    <div class="boat-option border-2 border-gray-200 rounded-lg p-4 hover:border-orange-400 hover:shadow-lg transition cursor-pointer" data-boat="4wd">
+                        <img src="http://localhost/safiery-ai/index_files/4wd.png" alt="4WD Vehicle" class="w-full h-32 object-cover rounded-md mb-2" onerror="this.onerror=null;this.src=&#39;https://placehold.co/300x200/cccccc/333333?text=4WD&#39;;">
+                        <h3 class="font-semibold text-lg">4WD Vehicle</h3>
+                    </div>
+                </div>
+                 <!-- Upload Button -->
+                <button id="uploadConfigBtn" class="w-full primary-orange text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition">
+                    Upload Configuration (.json)
+                </button>
+                <input type="file" id="configUploader" class="hidden" accept=".json">
             </div>
         </div>
-    </div>
 
-    <!-- Quote Editor Modal -->
-    <div id="quoteEditorModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-7xl max-h-[95vh] flex flex-col">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold" id="quoteEditorTitle">📋 New Quote</h2>
-                <button id="closeQuoteEditorBtn" class="text-3xl font-bold hover:text-red-500">&times;</button>
-            </div>
-            
-            <!-- Quote Header Info -->
-            <div class="bg-gray-50 p-4 rounded-lg mb-4 grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-semibold mb-1">Quote Name:</label>
-                    <input type="text" id="quoteNameInput" class="w-full border-2 border-gray-300 rounded p-2" placeholder="E.g., MC86 Port Side System">
+        <!-- Main Interface -->
+        <div id="mainInterface" class="h-full flex flex-col">
+            <!-- Header -->
+            <header class="bg-white shadow-md p-2 flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
+                <h1 id="configTitle" class="text-xl font-bold secondary-blue-text">New Configuration</h1>
+                <div class="flex items-center space-x-2 w-full md:w-auto" id="aiCommandBarContainer">
+                    <input type="text" id="aiCommandInput" class="border-2 border-purple-200 rounded-lg p-2 flex-grow focus:ring-purple-500 focus:border-purple-500" placeholder="Tell me what to configure...">
+                    <button id="aiCommandBtn" class="gemini-btn font-semibold py-2 px-4 rounded-lg transition">✨ Go</button>
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">Customer Name:</label>
-                    <input type="text" id="customerNameInput" class="w-full border-2 border-gray-300 rounded p-2" placeholder="E.g., John Smith">
+                <div class="flex items-center space-x-2">
+                    <button id="canBusDesignBtn" class="bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-purple-700 transition text-sm">🔌 CAN-Bus Design</button>
+                    <button id="wiringGuideBtn" class="gemini-btn font-semibold py-2 px-4 rounded-lg transition text-sm">Wiring Guide</button>
+                    <button id="generateQuoteBtn" class="bg-yellow-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-yellow-600 transition text-sm">💰 Generate Quote</button>
+                    <button id="manageQuotesBtn" class="bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-600 transition text-sm">📋 Quotes</button>
+                    <button id="downloadSummaryBtn" class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition text-sm">Summary IMG</button>
+                    <button id="downloadConfigBtn" class="secondary-blue text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-800 transition text-sm">Config File</button>
+                    <button id="startOverBtn" class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-600 transition text-sm">Start Over</button>
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">Boat Name:</label>
-                    <input type="text" id="boatNameInput" class="w-full border-2 border-gray-300 rounded p-2" placeholder="E.g., Sea Voyager">
+            </header>
+
+            <!-- 3-Panel Layout -->
+            <div class="flex-grow flex flex-col md:flex-row overflow-hidden">
+                <!-- Left Panel: Component Palette -->
+                <div class="w-full md:w-1/5 bg-gray-50 border-r border-gray-200 p-4 overflow-y-auto">
+                    <h2 class="text-lg font-bold mb-4">Components</h2>
+                    <div id="componentPalette" class="space-y-4"><div class="component-in-palette bg-white p-2 rounded-lg shadow flex items-center space-x-3" draggable="true" data-key="STAR-Light-V2">
+                <img src="https://ai.safiery.com/star-light.png" alt="STAR-Light V2" class="w-16 h-12 object-cover rounded" onerror="this.onerror=null;this.src=&#39;https://placehold.co/100x80/cccccc/333333?text=STAR-Light+V2&#39;;">
+                <span class="font-semibold">STAR-Light V2</span>
+            </div><div class="component-in-palette bg-white p-2 rounded-lg shadow flex items-center space-x-3" draggable="true" data-key="STAR-Power">
+                <img src="https://ai.safiery.com/star-power.png" alt="STAR-Power" class="w-16 h-12 object-cover rounded" onerror="this.onerror=null;this.src=&#39;https://placehold.co/100x80/cccccc/333333?text=STAR-Power&#39;;">
+                <span class="font-semibold">STAR-Power</span>
+            </div><div class="component-in-palette bg-white p-2 rounded-lg shadow flex items-center space-x-3" draggable="true" data-key="STAR-Rover-4">
+                <img src="https://ai.safiery.com/star-rover.png" alt="STAR-Rover-4" class="w-16 h-12 object-cover rounded" onerror="this.onerror=null;this.src=&#39;https://placehold.co/100x80/cccccc/333333?text=STAR-Rover-4&#39;;">
+                <span class="font-semibold">STAR-Rover-4</span>
+            </div><div class="component-in-palette bg-white p-2 rounded-lg shadow flex items-center space-x-3" draggable="true" data-key="Quad-Switch">
+                <img src="https://ai.safiery.com/quad-switch.png" alt="Quad-Switch" class="w-16 h-12 object-cover rounded" onerror="this.onerror=null;this.src=&#39;https://placehold.co/100x80/cccccc/333333?text=Quad-Switch&#39;;">
+                <span class="font-semibold">Quad-Switch</span>
+            </div><div class="component-in-palette bg-white p-2 rounded-lg shadow flex items-center space-x-3" draggable="true" data-key="Canbus-SP8">
+                <img src="https://ai.safiery.com/sp8.png" alt="Canbus-SP8" class="w-16 h-12 object-cover rounded" onerror="this.onerror=null;this.src=&#39;https://placehold.co/100x80/cccccc/333333?text=Canbus-SP8&#39;;">
+                <span class="font-semibold">Canbus-SP8</span>
+            </div></div>
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold mb-1">Notes:</label>
-                    <input type="text" id="quoteNotesInput" class="w-full border-2 border-gray-300 rounded p-2" placeholder="Optional notes">
-                </div>
-            </div>
-            
-            <!-- Configuration Link -->
-            <div id="configLinkSection" class="hidden bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="font-semibold text-blue-900">📐 Linked Configuration</p>
-                        <p class="text-sm text-blue-700" id="configLinkText">Configuration saved with this quote</p>
+
+                <!-- Center Panel: Canvas -->
+                <div id="canvasContainer" class="flex-grow bg-white flex items-center justify-center p-4 relative overflow-hidden" ondragover="if (!window.__cfRLUnblockHandlers) return false; event.preventDefault()" ondrop="if (!window.__cfRLUnblockHandlers) return false; dropComponent(event)">
+                    <div id="boatCanvas" class="relative w-full h-full boat-canvas" style="background-image: url(&quot;powerboat.png&quot;), url(&quot;https://placehold.co/800x600/ffffff/999999?text=Powerboat+Schematic&quot;);">
+                        <!-- Dropped components will appear here -->
                     </div>
-                    <div class="space-x-2">
-                        <button id="viewConfigBtn" class="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm">🔧 Open in Configurator</button>
-                        <button id="viewDiagramsBtn" class="bg-purple-600 text-white px-3 py-2 rounded hover:bg-purple-700 text-sm">📊 View Diagrams</button>
+                </div>
+
+                <!-- Right Panel: Configuration Summary -->
+                <div class="w-full md:w-1/4 bg-white border-l border-gray-200 p-4 overflow-y-auto">
+                    <h2 class="text-lg font-bold mb-4">Configuration Summary</h2>
+                    <div id="configSummary">
+                        <p class="text-gray-500">No channels configured yet.</p>
                     </div>
                 </div>
             </div>
-            
-            <!-- Line Items -->
-            <div class="flex-grow overflow-y-auto border-2 border-gray-300 rounded-lg p-4 mb-4">
-                <div class="flex justify-between items-center mb-3">
-                    <h3 class="text-lg font-bold">Line Items</h3>
-                    <div class="relative">
-                        <button id="addProductBtn" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm">+ Add Product</button>
-                        <div id="productSearchDropdown" class="hidden absolute right-0 top-full mt-2 w-96 bg-white border-2 border-blue-500 rounded-lg shadow-xl z-50">
-                            <input type="text" id="productSearchInput" class="w-full p-3 border-b-2 border-gray-200" placeholder="Search products...">
-                            <div id="productSearchResults" class="search-results p-2">
-                                <!-- Search results will appear here -->
+        </div>
+        
+        <!-- Generic Configuration Modal -->
+        <div id="configModal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-[2000]">
+            <div id="modalContent" class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-6xl max-h-[90vh] flex flex-col">
+                 <!-- Modal content will be dynamically generated -->
+            </div>
+        </div>
+
+        <!-- AI Response Modal -->
+        <div id="aiResponseModal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-[4000]">
+            <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-lg flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">✨ AI Assistant</h2>
+                    <button id="closeAiResponseModalBtn" class="text-3xl font-bold hover:text-red-500">×</button>
+                </div>
+                <div id="aiResponseContent" class="overflow-y-auto flex-grow">
+                    <!-- AI response will be injected here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wiring Guide Modal -->
+        <div id="wiringGuideModal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-[3000]">
+            <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-4xl max-h-[90vh] flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">✨ System Wiring Guide</h2>
+                    <button id="closeWiringModalBtn" class="text-3xl font-bold hover:text-red-500">×</button>
+                </div>
+                <div id="wiringGuideContent" class="overflow-y-auto flex-grow prose max-w-none">
+                    <!-- Wiring guide content will be injected here -->
+                </div>
+                 <div class="mt-4 text-right">
+                    <button id="copyWiringBtn" class="secondary-blue text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-800">Copy to Clipboard</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CAN-Bus Design Modal -->
+        <div id="canBusModal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-[3000]">
+            <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-6xl max-h-[90vh] flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">🔌 CAN-Bus Network Design</h2>
+                    <button id="closeCanBusModalBtn" class="text-3xl font-bold hover:text-red-500">×</button>
+                </div>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                    <p class="font-semibold">CAN-bus Topology Rules:</p>
+                    <div class="bg-yellow-50 border border-yellow-400 rounded p-2 my-2">
+                        <p class="text-sm font-bold">⚠️ DAISY CHAIN ONLY - No Star Connections!</p>
+                        <p class="text-xs">Each device can have maximum 2 connections. Endpoints have 1, middle devices have 2.</p>
+                    </div>
+                    <p class="font-semibold mt-3">Instructions:</p>
+                    <ol class="list-decimal ml-5 text-sm mt-2 space-y-1">
+                        <li>Click "Start Drawing" to enter connection mode</li>
+                        <li>Click on modules to connect them in sequence (linear chain only!)</li>
+                        <li><strong>Right-click on the canvas</strong> near a cable line to add routing waypoints</li>
+                        <li>Drag orange waypoint markers to adjust cable routing</li>
+                        <li><strong>Click distance labels</strong> to manually override calculated lengths</li>
+                        <li>System calculates distances and suggests proper cable combinations</li>
+                        <li>Click "Generate Network Diagram" when done</li>
+                    </ol>
+                    <p class="text-xs text-gray-600 mt-2">💡 Only CAN-bus devices (STAR modules, SP8) are shown. Wireless switches (SP4/Quad) don't need CAN-bus.</p>
+                </div>
+                
+                <div class="flex-grow overflow-y-auto">
+                    <div class="grid grid-cols-2 gap-6">
+                        <!-- Left: Canvas for connecting -->
+                        <div>
+                            <h3 class="font-bold mb-2">Draw Cable Path:</h3>
+                            <div id="canBusCanvas" class="relative w-full h-96 bg-gray-100 rounded-lg border-2 border-gray-300">
+                                <!-- Will render modules and connections here -->
                             </div>
+                            <div class="mt-4 space-y-2">
+                                <button id="clearPathBtn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full">Clear All Connections</button>
+                                <button id="toggleDrawModeBtn" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 w-full">▶️ Start Drawing</button>
+                                <div class="bg-gray-100 p-2 rounded text-xs">
+                                    <p class="font-bold">💡 Tips:</p>
+                                    <p>• Right-click canvas to add waypoints</p>
+                                    <p>• Drag orange dots to adjust routing</p>
+                                    <p>• Click distance to edit manually</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right: Parts list and diagram -->
+                        <div>
+                            <h3 class="font-bold mb-2">Network Configuration:</h3>
+                            <div id="canBusPartsListContainer" class="bg-white border rounded-lg p-4 max-h-96 overflow-y-auto">
+                                <p class="text-gray-500">Connect modules to generate parts list...</p>
+                            </div>
+                            <button id="generateNetworkBtn" class="w-full mt-4 bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700">📋 Generate Wiring Diagram</button>
                         </div>
                     </div>
                 </div>
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="p-2 border">SKU</th>
-                            <th class="p-2 border">Description</th>
-                            <th class="p-2 border">Qty</th>
-                            <th class="p-2 border">Unit Price</th>
-                            <th class="p-2 border">Total</th>
-                            <th class="p-2 border w-20">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="quoteLineItemsTable">
-                        <!-- Line items will be added here -->
-                    </tbody>
-                </table>
             </div>
-            
-            <!-- Totals -->
-            <div class="bg-gray-50 p-4 rounded-lg mb-4">
-                <div class="flex justify-end space-x-8 text-lg">
-                    <span class="font-semibold">Subtotal:</span>
-                    <span id="quoteSubtotal" class="font-bold">$0.00</span>
+        </div>
+        
+        <!-- Wiring Diagram Preview Modal -->
+        <div id="wiringDiagramModal" class="modal hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-[4000]">
+            <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-7xl max-h-[95vh] flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">🔌 NMEA 2000 Wiring Diagram</h2>
+                    <button id="closeWiringDiagramModalBtn" class="text-3xl font-bold hover:text-red-500">×</button>
+                </div>
+                <div id="wiringDiagramContainer" class="flex-grow overflow-auto bg-white border-2 border-gray-300 rounded-lg p-4">
+                    <!-- SVG diagram will be rendered here -->
+                </div>
+                <div class="mt-4 flex space-x-2">
+                    <button id="downloadDiagramPngBtn" class="flex-1 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700">📥 Download PNG</button>
+                    <button id="downloadDiagramSvgBtn" class="flex-1 bg-purple-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-purple-700">📥 Download SVG</button>
                 </div>
             </div>
-            
-            <!-- Actions -->
-            <div class="flex space-x-2">
-                <button id="saveQuoteBtn" class="flex-1 bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700">💾 Save Quote</button>
-                <button id="downloadQuotePdfBtn" class="flex-1 bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700">📄 Download PDF</button>
-                <button id="convertToInvoiceBtn" class="flex-1 bg-orange-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-700">🚀 Convert to Invoice</button>
-            </div>
         </div>
     </div>
+    
+<script type="text/javascript">
+    // --- STATE MANAGEMENT ---
+    let appState = {
+        boatType: null,
+        boatLength: 10, // meters
+        placedComponents: [],
+        canBusPath: [], // Array of {from: componentId, to: componentId, waypoints: [{x, y}], manualLength: null}
+        nextId: 0,
+        isDrawingMode: false,
+        hasNonCanBusOverride: false
+    };
 
-    <!-- Diagrams Viewer Modal -->
-    <div id="diagramsModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-6xl max-h-[95vh] flex flex-col">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold">📊 Configuration Diagrams</h2>
-                <button id="closeDiagramsBtn" class="text-3xl font-bold hover:text-red-500">&times;</button>
-            </div>
-            <div id="diagramsContent" class="flex-grow overflow-y-auto space-y-4">
-                <!-- Diagrams will be displayed here -->
-            </div>
-        </div>
-    </div>
+    // --- DOM ELEMENTS ---
+    const welcomeModal = document.getElementById('welcomeModal');
+    const mainInterface = document.getElementById('mainInterface');
+    const boatOptions = document.querySelectorAll('.boat-option');
+    const boatCanvas = document.getElementById('boatCanvas');
+    const componentPalette = document.getElementById('componentPalette');
+    const configSummary = document.getElementById('configSummary');
+    const configModal = document.getElementById('configModal');
+    const modalContent = document.getElementById('modalContent');
+    const configTitle = document.getElementById('configTitle');
+    const wiringGuideModal = document.getElementById('wiringGuideModal');
+    const wiringGuideContent = document.getElementById('wiringGuideContent');
+    const aiResponseModal = document.getElementById('aiResponseModal');
+    const aiResponseContent = document.getElementById('aiResponseContent');
+    const aiCommandInput = document.getElementById('aiCommandInput');
+    const canBusModal = document.getElementById('canBusModal');
+    const canBusCanvas = document.getElementById('canBusCanvas');
+    const canBusPartsListContainer = document.getElementById('canBusPartsListContainer');
+    const boatLengthInput = document.getElementById('boatLengthInput');
+    const wiringDiagramModal = document.getElementById('wiringDiagramModal');
+    const wiringDiagramContainer = document.getElementById('wiringDiagramContainer');
 
-    <script type="0a289f235e50cac5cfa48845-text/javascript">
-        // Complete product catalog
-        const PRODUCT_CATALOG = {
-            // Hardware
-            'STAR-light-MATTER': { name: 'STAR-Light V2 (Matter)', price: 890, category: 'Output Modules' },
-            'STAR-power-Matter-150': { name: 'STAR-Power (Matter 150A)', price: 924, category: 'Output Modules' },
-            'STAR-Rover-4': { name: 'STAR-Rover-4', price: 650, category: 'Output Modules' },
-            'STAR-switch-SP4-wireless-bat': { name: 'STAR-Switch SP4 Wireless', price: 206.85, category: 'Input Switches' },
-            'STAR-Switch-SP8': { name: 'STAR-Switch SP8 CAN-Bus', price: 204.75, category: 'Input Switches' },
-            
-            // NMEA Cables
-            '010-11076-00': { name: 'NMEA Cable 2m', price: 49, category: 'CAN-Bus Cables' },
-            '010-11076-01': { name: 'NMEA Cable 5m', price: 55, category: 'CAN-Bus Cables' },
-            '010-11076-02': { name: 'NMEA Cable 10m', price: 85, category: 'CAN-Bus Cables' },
-            '010-11076-03': { name: 'NMEA Dropper 0.3m', price: 39, category: 'CAN-Bus Accessories' },
-            
-            // Accessories
-            '010-11078-00': { name: 'NMEA T-Connector', price: 39, category: 'CAN-Bus Accessories' },
-            'NMEA-Terminator-Pair': { name: 'NMEA Terminator Pair', price: 25, category: 'CAN-Bus Accessories' },
-            'NMEA-vecan-joiner-1': { name: 'NMEA VE-CAN Kit', price: 282.10, category: 'CAN-Bus Accessories' },
-            
-            // Additional common items
-            'WIRE-14AWG-RED': { name: '14 AWG Red Wire (per meter)', price: 2.50, category: 'Wire & Cable' },
-            'WIRE-14AWG-BLACK': { name: '14 AWG Black Wire (per meter)', price: 2.50, category: 'Wire & Cable' },
-            'WIRE-10AWG-RED': { name: '10 AWG Red Wire (per meter)', price: 3.80, category: 'Wire & Cable' },
-            'WIRE-10AWG-BLACK': { name: '10 AWG Black Wire (per meter)', price: 3.80, category: 'Wire & Cable' },
-            'FUSE-HOLDER-ANL': { name: 'ANL Fuse Holder', price: 15.00, category: 'Protection' },
-            'FUSE-ANL-100A': { name: '100A ANL Fuse', price: 8.00, category: 'Protection' },
-            'FUSE-ANL-150A': { name: '150A ANL Fuse', price: 8.50, category: 'Protection' },
-            'BUSBAR-100A': { name: '100A Busbar', price: 35.00, category: 'Distribution' },
-            'BUSBAR-150A': { name: '150A Busbar', price: 45.00, category: 'Distribution' },
-            'INSTALL-LABOR': { name: 'Installation Labor (per hour)', price: 125.00, category: 'Services' },
-            'COMMISSIONING': { name: 'System Commissioning', price: 500.00, category: 'Services' }
-        };
+    // --- BUTTONS ---
+    const uploadConfigBtn = document.getElementById('uploadConfigBtn');
+    const configUploader = document.getElementById('configUploader');
+    const startOverBtn = document.getElementById('startOverBtn');
+    const downloadConfigBtn = document.getElementById('downloadConfigBtn');
+    const downloadSummaryBtn = document.getElementById('downloadSummaryBtn');
+    const wiringGuideBtn = document.getElementById('wiringGuideBtn');
+    const closeWiringModalBtn = document.getElementById('closeWiringModalBtn');
+    const copyWiringBtn = document.getElementById('copyWiringBtn');
+    const aiCommandBtn = document.getElementById('aiCommandBtn');
+    const closeAiResponseModalBtn = document.getElementById('closeAiResponseModalBtn');
+    const canBusDesignBtn = document.getElementById('canBusDesignBtn');
+    const closeCanBusModalBtn = document.getElementById('closeCanBusModalBtn');
+    const clearPathBtn = document.getElementById('clearPathBtn');
+    const toggleDrawModeBtn = document.getElementById('toggleDrawModeBtn');
+    const generateNetworkBtn = document.getElementById('generateNetworkBtn');
+    const closeWiringDiagramModalBtn = document.getElementById('closeWiringDiagramModalBtn');
+    const downloadDiagramPngBtn = document.getElementById('downloadDiagramPngBtn');
+    const downloadDiagramSvgBtn = document.getElementById('downloadDiagramSvgBtn');
+    const generateQuoteBtn = document.getElementById('generateQuoteBtn');
+    const manageQuotesBtn = document.getElementById('manageQuotesBtn');
 
-        // Local storage for quotes
-        let quotes = JSON.parse(localStorage.getItem('safiery_quotes') || '[]');
-        let currentEditingQuote = null;
+
+    // --- DATA & DEFINITIONS ---
+    const HARDWARE_COMPONENTS = {
+        'STAR-Light-V2': { name: 'STAR-Light V2', type: 'output', channels: 12, image: 'star-light.png', details: { ch1_4: 'dimmable', ch5_8: 'on/off', ch9_12: 'dimmable' }, canBus: true, sku: 'STAR-light-MATTER', price: 890 },
+        'STAR-Power': { name: 'STAR-Power', type: 'output', channels: 12, image: 'star-power.png', details: { ch1_6: 'high-current', ch7_12: 'dimmable' }, canBus: true, sku: 'STAR-power-Matter-150', price: 924 },
+        'STAR-Rover-4': { name: 'STAR-Rover-4', type: 'output', channels: 4, image: 'star-rover.png', details: { all: 'dimmable' }, canBus: true, sku: 'STAR-Rover-4', price: 650 },
+        'Quad-Switch': { name: 'Quad-Switch', type: 'input', buttons: 4, image: 'quad-switch.png', canBus: false, sku: 'STAR-switch-SP4-wireless-bat', price: 206.85 },
+        'Canbus-SP8': { name: 'Canbus-SP8', type: 'input', buttons: 8, image: 'sp8.png', canBus: true, sku: 'STAR-Switch-SP8', price: 204.75 }
+    };
+    
+    const CABLE_PRICING = {
+        1: { sku: '010-11076-00', name: 'NMEA Cable 2m', price: 49 },
+        3: { sku: '010-11076-01', name: 'NMEA Cable 5m', price: 55 },
+        5: { sku: '010-11076-01', name: 'NMEA Cable 5m', price: 55 },
+        10: { sku: '010-11076-02', name: 'NMEA Cable 10m', price: 85 }
+    };
+    
+    const ACCESSORIES_PRICING = {
+        dropper: { sku: '010-11076-03', name: 'NMEA Dropper 0.3m', price: 39 },
+        tpiece: { sku: '010-11078-00', name: 'NMEA T-Connector', price: 39 },
+        terminator: { sku: 'NMEA-Terminator-Pair', name: 'NMEA Terminator Pair', price: 25 },
+        vecan: { sku: 'NMEA-vecan-joiner-1', name: 'NMEA VE-CAN Kit', price: 282.10 }
+    };
+    
+    const BOAT_ZONES = {
+        catamaran: [{ name: 'Aft Deck', x: 0.5, y: 0.15 }, { name: 'Saloon/Helm', x: 0.5, y: 0.5 }, { name: 'Forward Deck', x: 0.5, y: 0.85 }],
+        monohull: [{ name: 'Cockpit', x: 0.5, y: 0.17 }, { name: 'Saloon', x: 0.5, y: 0.55 }, { name: 'Bow', x: 0.5, y: 0.87 }],
+        powerboat: [{ name: 'Swim Platform', x: 0.5, y: 0.1 }, { name: 'Aft Deck', x: 0.5, y: 0.35 }, { name: 'Helm', x: 0.5, y: 0.65 }, { name: 'Bow', x: 0.5, y: 0.9 }],
+        caravan: [{ name: 'Front Cabin', x: 0.5, y: 0.2 }, { name: 'Living Area', x: 0.5, y: 0.5 }, { name: 'Rear Section', x: 0.5, y: 0.8 }],
+        '4wd': [{ name: 'Engine Bay', x: 0.5, y: 0.2 }, { name: 'Cabin', x: 0.5, y: 0.5 }, { name: 'Cargo Area', x: 0.5, y: 0.8 }]
+    };
+    
+    const BOAT_IMAGES = {
+        catamaran: 'catamaran.png',
+        monohull: 'monohull.png',
+        powerboat: 'powerboat.png',
+        caravan: 'caravan.png',
+        '4wd': '4wd.png'
+    }
+
+    // --- INITIALIZATION ---
+    function init() {
+        populatePalette();
+        addEventListeners();
         
-        function init() {
-            renderQuotesList();
-            
-            document.getElementById('newQuoteBtn').addEventListener('click', () => openQuoteEditor(null));
-            document.getElementById('closeQuoteEditorBtn').addEventListener('click', closeQuoteEditor);
-            document.getElementById('addProductBtn').addEventListener('click', toggleProductSearch);
-            document.getElementById('productSearchInput').addEventListener('input', handleProductSearch);
-            document.getElementById('saveQuoteBtn').addEventListener('click', saveQuote);
-            document.getElementById('downloadQuotePdfBtn').addEventListener('click', downloadQuotePdf);
-            document.getElementById('convertToInvoiceBtn').addEventListener('click', convertToInvoice);
-            document.getElementById('viewConfigBtn').addEventListener('click', openInConfigurator);
-            document.getElementById('viewDiagramsBtn').addEventListener('click', viewDiagrams);
-            document.getElementById('closeDiagramsBtn').addEventListener('click', () => document.getElementById('diagramsModal').classList.add('hidden'));
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                const dropdown = document.getElementById('productSearchDropdown');
-                const addBtn = document.getElementById('addProductBtn');
-                if (!dropdown.contains(e.target) && e.target !== addBtn) {
-                    dropdown.classList.add('hidden');
+        // Check if we should load a configuration from quotes
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('loadTemp') === 'true') {
+            const tempConfig = localStorage.getItem('tempLoadConfig');
+            if (tempConfig) {
+                try {
+                    appState = JSON.parse(tempConfig);
+                    localStorage.removeItem('tempLoadConfig');
+                    selectBoat(appState.boatType);
+                    renderCanvas();
+                    updateSummary();
+                    configTitle.textContent = `${appState.boatType} Configuration (from Quote)`;
+                } catch (e) {
+                    console.error('Error loading configuration:', e);
+                }
+            }
+        }
+    }
+
+    function populatePalette() {
+        componentPalette.innerHTML = '';
+        for (const key in HARDWARE_COMPONENTS) {
+            const comp = HARDWARE_COMPONENTS[key];
+            const div = document.createElement('div');
+            div.className = 'component-in-palette bg-white p-2 rounded-lg shadow flex items-center space-x-3';
+            div.draggable = true;
+            div.dataset.key = key;
+            const placeholder = `https://placehold.co/100x80/cccccc/333333?text=${comp.name.replace(' ','+')}`;
+            div.innerHTML = `
+                <img src="${comp.image}" alt="${comp.name}" class="w-16 h-12 object-cover rounded" onerror="this.onerror=null;this.src='${placeholder}';">
+                <span class="font-semibold">${comp.name}</span>
+            `;
+            div.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', key);
+            });
+            componentPalette.appendChild(div);
+        }
+    }
+
+    function addEventListeners() {
+        boatOptions.forEach(option => {
+            option.addEventListener('click', () => selectBoat(option.dataset.boat));
+        });
+
+        uploadConfigBtn.addEventListener('click', () => configUploader.click());
+        configUploader.addEventListener('change', uploadConfiguration);
+
+        startOverBtn.addEventListener('click', startOver);
+        downloadConfigBtn.addEventListener('click', downloadConfiguration);
+        downloadSummaryBtn.addEventListener('click', downloadSummaryImage);
+        
+        wiringGuideBtn.addEventListener('click', generateWiringGuide);
+        closeWiringModalBtn.addEventListener('click', () => wiringGuideModal.classList.add('hidden'));
+        
+        copyWiringBtn.addEventListener('click', () => {
+            const textArea = document.createElement('textarea');
+            textArea.value = wiringGuideContent.innerText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('Wiring guide copied to clipboard!');
+        });
+        
+        aiCommandBtn.addEventListener('click', handleAICommand);
+        aiCommandInput.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter') handleAICommand();
+        });
+        closeAiResponseModalBtn.addEventListener('click', () => aiResponseModal.classList.add('hidden'));
+        
+        canBusDesignBtn.addEventListener('click', openCanBusDesigner);
+        closeCanBusModalBtn.addEventListener('click', () => canBusModal.classList.add('hidden'));
+        clearPathBtn.addEventListener('click', clearCanBusPath);
+        toggleDrawModeBtn.addEventListener('click', toggleDrawMode);
+        generateNetworkBtn.addEventListener('click', generateNetworkDiagram);
+        closeWiringDiagramModalBtn.addEventListener('click', () => wiringDiagramModal.classList.add('hidden'));
+        downloadDiagramPngBtn.addEventListener('click', downloadDiagramAsPng);
+        downloadDiagramSvgBtn.addEventListener('click', downloadDiagramAsSvg);
+        
+        // Debug generate quote button
+        console.log('Setting up Generate Quote button...');
+        console.log('generateQuoteBtn element:', generateQuoteBtn);
+        
+        if (generateQuoteBtn) {
+            generateQuoteBtn.addEventListener('click', () => {
+                console.log('💰 Generate Quote button clicked!');
+                try {
+                    generateQuote();
+                } catch (error) {
+                    console.error('Error in generateQuote:', error);
+                    alert('Error generating quote: ' + error.message);
                 }
             });
+            console.log('✅ Generate Quote button listener attached');
+        } else {
+            console.error('❌ generateQuoteBtn element not found!');
         }
         
-        function renderQuotesList() {
-            const container = document.getElementById('quotesListContainer');
-            
-            if (quotes.length === 0) {
-                container.innerHTML = '<p class="text-center text-gray-500 py-8">No quotes yet. Create your first quote!</p>';
-                return;
-            }
-            
-            let html = '<table class="w-full border-collapse">';
-            html += '<thead><tr class="bg-gray-100">';
-            html += '<th class="p-3 border text-left">ID</th>';
-            html += '<th class="p-3 border text-left">Name</th>';
-            html += '<th class="p-3 border text-left">Customer</th>';
-            html += '<th class="p-3 border text-left">Boat</th>';
-            html += '<th class="p-3 border text-right">Total</th>';
-            html += '<th class="p-3 border text-center">Config</th>';
-            html += '<th class="p-3 border text-center">Diagrams</th>';
-            html += '<th class="p-3 border text-center">Status</th>';
-            html += '<th class="p-3 border text-center">Actions</th>';
-            html += '</tr></thead><tbody>';
-            
-            quotes.forEach(quote => {
-                const statusColors = {
-                    draft: 'bg-gray-100 text-gray-800',
-                    sent: 'bg-green-100 text-green-800',
-                    invoice: 'bg-orange-100 text-orange-800'
-                };
-                const hasConfig = quote.configurationSnapshot ? '✅' : '❌';
-                const hasDiagrams = quote.diagrams && (quote.diagrams.networkDiagram || quote.diagrams.summaryImage) ? '✅' : '❌';
-                
-                html += '<tr class="hover:bg-gray-50">';
-                html += `<td class="p-3 border">#${quote.id}</td>`;
-                html += `<td class="p-3 border font-semibold">${quote.name}</td>`;
-                html += `<td class="p-3 border">${quote.customerName || 'N/A'}</td>`;
-                html += `<td class="p-3 border">${quote.boatName || 'N/A'}</td>`;
-                html += `<td class="p-3 border text-right font-bold">${quote.subtotal.toFixed(2)}</td>`;
-                html += `<td class="p-3 border text-center">${hasConfig}</td>`;
-                html += `<td class="p-3 border text-center">${hasDiagrams}</td>`;
-                html += `<td class="p-3 border text-center"><span class="${statusColors[quote.status]} px-2 py-1 rounded text-xs font-semibold">${quote.status}</span></td>`;
-                html += `<td class="p-3 border text-center space-x-1">`;
-                html += `<button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-xs" onclick="openQuoteEditor(${quote.id})">Edit</button>`;
-                html += `<button class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 text-xs" onclick="downloadQuotePdfById(${quote.id})">PDF</button>`;
-                html += `<button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs" onclick="deleteQuote(${quote.id})">Delete</button>`;
-                html += `</td></tr>`;
-            });
-            
-            html += '</tbody></table>';
-            container.innerHTML = html;
+        manageQuotesBtn.addEventListener('click', () => window.location.href = 'quotes.html');
+    }
+    
+    // --- CORE WORKFLOW ---
+    function selectBoat(boatType) {
+        appState.boatType = boatType;
+        appState.boatLength = parseFloat(boatLengthInput.value) || 10;
+        const boatImage = BOAT_IMAGES[boatType];
+        const placeholder = `https://placehold.co/800x600/ffffff/999999?text=${boatType.charAt(0).toUpperCase() + boatType.slice(1)}+Schematic`;
+        boatCanvas.style.backgroundImage = `url('${boatImage}'), url('${placeholder}')`;
+        welcomeModal.classList.add('hidden');
+        mainInterface.classList.remove('hidden');
+        mainInterface.classList.add('flex');
+    }
+    
+    function startOver() {
+        if(confirm("Are you sure you want to start over? All unsaved progress will be lost.")) {
+            location.reload();
         }
+    }
+
+    function dropComponent(e, componentKey, dropX, dropY) {
+        e?.preventDefault();
+        componentKey = componentKey || e.dataTransfer.getData('text/plain');
+        if (!componentKey || !HARDWARE_COMPONENTS[componentKey]) return null;
+
+        const canvasRect = boatCanvas.getBoundingClientRect();
+        const x = dropX || (e.clientX - canvasRect.left) / canvasRect.width;
+        const y = dropY || (e.clientY - canvasRect.top) / canvasRect.height;
         
-        function openQuoteEditor(quoteId) {
-            currentEditingQuote = quoteId;
-            
-            if (quoteId === null) {
-                document.getElementById('quoteEditorTitle').textContent = '📋 New Quote';
-                document.getElementById('quoteNameInput').value = '';
-                document.getElementById('customerNameInput').value = '';
-                document.getElementById('boatNameInput').value = '';
-                document.getElementById('quoteNotesInput').value = '';
-                document.getElementById('configLinkSection').classList.add('hidden');
-                renderLineItems([]);
-            } else {
-                const quote = quotes.find(q => q.id === quoteId);
-                document.getElementById('quoteEditorTitle').textContent = `📋 Edit Quote #${quote.id}`;
-                document.getElementById('quoteNameInput').value = quote.name;
-                document.getElementById('customerNameInput').value = quote.customerName || '';
-                document.getElementById('boatNameInput').value = quote.boatName || '';
-                document.getElementById('quoteNotesInput').value = quote.notes || '';
-                
-                if (quote.configurationSnapshot) {
-                    document.getElementById('configLinkSection').classList.remove('hidden');
-                    document.getElementById('configLinkText').textContent = `Configuration saved: ${quote.configurationSnapshot.boatType} - ${quote.configurationSnapshot.placedComponents.length} components`;
-                    
-                    // Enable/disable diagrams button based on availability
-                    const viewDiagramsBtn = document.getElementById('viewDiagramsBtn');
-                    const hasDiagrams = quote.diagrams && (quote.diagrams.networkDiagram || quote.diagrams.summaryImage);
-                    viewDiagramsBtn.disabled = !hasDiagrams;
-                    viewDiagramsBtn.className = hasDiagrams 
-                        ? 'bg-purple-600 text-white px-3 py-2 rounded hover:bg-purple-700 text-sm'
-                        : 'bg-gray-400 text-white px-3 py-2 rounded cursor-not-allowed text-sm';
-                } else {
-                    document.getElementById('configLinkSection').classList.add('hidden');
-                }
-                
-                renderLineItems(quote.lineItems);
-            }
-            
-            document.getElementById('quoteEditorModal').classList.remove('hidden');
-        }
+        const newId = appState.nextId++;
+        const defaultName = generateDefaultName(componentKey, x, y);
         
-        function closeQuoteEditor() {
-            document.getElementById('quoteEditorModal').classList.add('hidden');
-        }
-        
-        function toggleProductSearch() {
-            const dropdown = document.getElementById('productSearchDropdown');
-            dropdown.classList.toggle('hidden');
-            if (!dropdown.classList.contains('hidden')) {
-                document.getElementById('productSearchInput').focus();
-                handleProductSearch(); // Show all products initially
-            }
-        }
-        
-        function handleProductSearch() {
-            const searchTerm = document.getElementById('productSearchInput').value.toLowerCase();
-            const results = document.getElementById('productSearchResults');
-            
-            let html = '';
-            const categories = {};
-            
-            // Group by category
-            Object.entries(PRODUCT_CATALOG).forEach(([sku, product]) => {
-                if (searchTerm === '' || 
-                    product.name.toLowerCase().includes(searchTerm) || 
-                    sku.toLowerCase().includes(searchTerm) ||
-                    product.category.toLowerCase().includes(searchTerm)) {
-                    
-                    if (!categories[product.category]) {
-                        categories[product.category] = [];
-                    }
-                    categories[product.category].push({ sku, ...product });
-                }
-            });
-            
-            // Render by category
-            Object.entries(categories).forEach(([category, products]) => {
-                html += `<div class="mb-2"><div class="font-bold text-sm text-gray-600 px-2 py-1 bg-gray-100">${category}</div>`;
-                products.forEach(product => {
-                    html += `<div class="p-2 hover:bg-blue-50 cursor-pointer border-b" onclick="addProductToQuote('${product.sku}')">`;
-                    html += `<div class="font-semibold">${product.name}</div>`;
-                    html += `<div class="text-xs text-gray-500">${product.sku} - $${product.price.toFixed(2)}</div>`;
-                    html += `</div>`;
-                });
-                html += '</div>';
-            });
-            
-            if (html === '') {
-                html = '<p class="text-center text-gray-500 py-4">No products found</p>';
-            }
-            
-            results.innerHTML = html;
-        }
-        
-        window.addProductToQuote = function(sku) {
-            const product = PRODUCT_CATALOG[sku];
-            if (!product) return;
-            
-            const items = getCurrentLineItems();
-            
-            // Check if product already exists
-            const existingItem = items.find(item => item.sku === sku);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                items.push({
-                    sku: sku,
-                    description: product.name,
-                    quantity: 1,
-                    unitPrice: product.price
-                });
-            }
-            
-            renderLineItems(items);
-            document.getElementById('productSearchDropdown').classList.add('hidden');
-            document.getElementById('productSearchInput').value = '';
+        const newComponent = {
+            id: newId,
+            key: componentKey,
+            name: defaultName,
+            x: x * 100,
+            y: y * 100,
+            config: {} 
         };
         
-        function renderLineItems(items) {
-            const tbody = document.getElementById('quoteLineItemsTable');
-            tbody.innerHTML = '';
-            
-            items.forEach((item, idx) => {
-                const row = tbody.insertRow();
-                row.innerHTML = `
-                    <td class="p-2 border">${item.sku}</td>
-                    <td class="p-2 border">${item.description}</td>
-                    <td class="p-2 border">
-                        <input type="number" class="w-20 p-1 border rounded" value="${item.quantity}" min="1" data-idx="${idx}" data-field="quantity">
-                    </td>
-                    <td class="p-2 border">$${item.unitPrice.toFixed(2)}</td>
-                    <td class="p-2 border font-semibold">$${(item.quantity * item.unitPrice).toFixed(2)}</td>
-                    <td class="p-2 border text-center">
-                        <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-xs" onclick="deleteLine(${idx})">×</button>
-                    </td>
-                `;
-            });
-            
-            updateSubtotal();
+        if (HARDWARE_COMPONENTS[componentKey].type === 'output') {
+             newComponent.config.channels = Array(HARDWARE_COMPONENTS[componentKey].channels).fill(null).map((_, i) => ({
+                customName: `Channel ${i + 1}`,
+                function: 'Not Set',
+                polarity: '+',
+                fuseRating: 'N/A',
+                isGroupMember: false,
+             }));
+        } else {
+            newComponent.config.buttons = Array(HARDWARE_COMPONENTS[componentKey].buttons).fill(null).map((_, i) => ({
+                customName: `Button ${i + 1}`,
+                linkedChannel: null,
+            }));
         }
+
+        appState.placedComponents.push(newComponent);
+        renderCanvas();
+        updateSummary();
+        return newComponent;
+    }
+    
+    function generateDefaultName(componentKey, x, y) {
+        const zones = BOAT_ZONES[appState.boatType] || [];
+        let locationName = 'General';
+        // Find the closest zone center
+        let minDistance = Infinity;
+        zones.forEach(zone => {
+             const dx = x - zone.x;
+             const dy = y - zone.y;
+             const distance = Math.sqrt(dx*dx + dy*dy);
+             if (distance < minDistance) {
+                 minDistance = distance;
+                 locationName = zone.name;
+             }
+        });
         
-        function getCurrentLineItems() {
-            const items = [];
-            document.querySelectorAll('#quoteLineItemsTable tr').forEach(row => {
-                const cells = row.querySelectorAll('td');
-                if (cells.length >= 4) {
-                    const qtyInput = row.querySelector('input[data-field="quantity"]');
-                    items.push({
-                        sku: cells[0].textContent,
-                        description: cells[1].textContent,
-                        quantity: parseFloat(qtyInput.value) || 0,
-                        unitPrice: parseFloat(cells[3].textContent.replace('$', '')) || 0
+        const count = appState.placedComponents.filter(c => c.name.startsWith(locationName)).length;
+        return `${locationName} ${count + 1}`;
+    }
+
+    // --- RENDERING ---
+    function renderCanvas() {
+        boatCanvas.innerHTML = '';
+        appState.placedComponents.forEach(comp => {
+            const compData = HARDWARE_COMPONENTS[comp.key];
+            const div = document.createElement('div');
+            div.className = 'component-on-canvas rounded-lg flex flex-col items-center text-center';
+            div.style.left = `${comp.x}%`;
+            div.style.top = `${comp.y}%`;
+            div.style.transform = 'translate(-50%, -50%)';
+            div.dataset.id = comp.id;
+            
+            const placeholder = `https://placehold.co/100x80/cccccc/333333?text=${compData.name.replace(' ','+')}`;
+
+            div.innerHTML = `
+                <img src="${compData.image}" alt="${compData.name}" class="w-16 h-12 object-cover rounded-md mb-1" onerror="this.onerror=null;this.src='${placeholder}';">
+                <div class="bg-transparent rounded px-2 py-1">
+                    <input type="text" value="${comp.name}" class="component-name-input w-full text-center bg-transparent font-semibold text-xs p-0 m-0 border-0 focus:ring-0 focus:border-blue-500"/>
+                    <div class="flex space-x-1 mt-1 justify-center">
+                        <button class="configure-btn bg-blue-500 text-white rounded-full p-1 w-5 h-5 flex items-center justify-center hover:bg-blue-600">⚙️</button>
+                        <button class="delete-btn bg-red-500 text-white rounded-full p-1 w-5 h-5 flex items-center justify-center hover:bg-red-600">X</button>
+                    </div>
+                </div>
+            `;
+            
+            makeDraggable(div, comp.id);
+            div.querySelector('.configure-btn').addEventListener('click', (e) => { e.stopPropagation(); openConfigModal(comp.id); });
+            div.querySelector('.delete-btn').addEventListener('click', (e) => { e.stopPropagation(); deleteComponent(comp.id); });
+            div.querySelector('.component-name-input').addEventListener('change', (e) => {
+                const component = appState.placedComponents.find(c => c.id === comp.id);
+                if (component) {
+                    component.name = e.target.value;
+                    updateSummary();
+                }
+            });
+
+            boatCanvas.appendChild(div);
+        });
+    }
+    
+    function makeDraggable(element, componentId) {
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        element.addEventListener('mousedown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') return;
+            isDragging = true;
+            element.style.zIndex = 1001;
+            offsetX = e.clientX - element.getBoundingClientRect().left;
+            offsetY = e.clientY - element.getBoundingClientRect().top;
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        function onMouseMove(e) {
+            if (!isDragging) return;
+            const canvasRect = boatCanvas.getBoundingClientRect();
+            let newX = ((e.clientX - canvasRect.left - offsetX) / canvasRect.width) * 100;
+            let newY = ((e.clientY - canvasRect.top - offsetY) / canvasRect.height) * 100;
+            
+            newX = Math.max(0, Math.min(100, newX));
+            newY = Math.max(0, Math.min(100, newY));
+
+            element.style.left = `${newX}%`;
+            element.style.top = `${newY}%`;
+            
+            const component = appState.placedComponents.find(c => c.id === componentId);
+            if(component) {
+                component.x = newX;
+                component.y = newY;
+            }
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+            element.style.zIndex = 1000;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+    }
+    
+    function deleteComponent(id) {
+        if(confirm("Are you sure you want to delete this component?")) {
+            appState.placedComponents = appState.placedComponents.filter(c => c.id !== id);
+             appState.placedComponents.forEach(comp => {
+                if (comp.config.buttons) {
+                    comp.config.buttons.forEach(btn => {
+                        if (btn.linkedChannel && btn.linkedChannel.moduleId === id) {
+                            btn.linkedChannel = null;
+                        }
                     });
                 }
             });
-            return items;
+            renderCanvas();
+            updateSummary();
+        }
+    }
+    
+    function updateSummary() {
+        let summaryHTML = '';
+        let hasConfiguredChannels = false;
+
+        appState.placedComponents.forEach(comp => {
+            if (comp.config.channels) { // It's an output module
+                const configuredChannels = comp.config.channels.filter(ch => ch.function !== 'Not Set');
+                if (configuredChannels.length > 0) {
+                    hasConfiguredChannels = true;
+                    summaryHTML += `<div class="mb-4 bg-gray-50 p-3 rounded-lg">
+                                       <h3 class="font-bold secondary-blue-text">${comp.name}</h3>`;
+                    configuredChannels.forEach((ch) => {
+                         const originalIndex = comp.config.channels.findIndex(c => c === ch);
+                         let switchInfo = 'None';
+                         appState.placedComponents.forEach(inputComp => {
+                            if(inputComp.config.buttons) {
+                                inputComp.config.buttons.forEach((btn, btnIdx) => {
+                                    if(btn.linkedChannel && btn.linkedChannel.moduleId === comp.id && btn.linkedChannel.channelIndex === originalIndex) {
+                                        switchInfo = `${inputComp.name} - Btn ${btnIdx+1}`;
+                                    }
+                                });
+                            }
+                         });
+
+                         summaryHTML += `<div class="text-sm border-t mt-2 pt-2">
+                                           <p><strong>Name:</strong> ${ch.customName}</p>
+                                           <p><strong>Module:</strong> ${comp.name} (Ch ${originalIndex + 1})</p>
+                                           <p><strong>Function:</strong> ${ch.function}</p>
+                                           <p><strong>Polarity:</strong> ${ch.polarity === '+' ? 'Positive' : 'Negative'} Switched</p>
+                                           <p><strong>Controlled by:</strong> ${switchInfo}</p>
+                                         </div>`;
+                    });
+                    summaryHTML += `</div>`;
+                }
+            }
+        });
+
+        if (!hasConfiguredChannels) {
+            configSummary.innerHTML = `<p class="text-gray-500">No channels configured yet.</p>`;
+        } else {
+            configSummary.innerHTML = summaryHTML;
+        }
+    }
+
+
+    // --- CONFIGURATION MODAL LOGIC ---
+    function openConfigModal(id) {
+        const component = appState.placedComponents.find(c => c.id === id);
+        if (!component) return;
+        
+        const componentData = HARDWARE_COMPONENTS[component.key];
+        let modalHTML = '';
+
+        if (componentData.type === 'output') {
+            modalHTML = generateOutputModal(component, componentData);
+        } else { // input
+            modalHTML = generateInputModal(component, componentData);
+        }
+
+        modalContent.innerHTML = modalHTML;
+        configModal.classList.remove('hidden');
+        
+        addModalEventListeners(id);
+    }
+    
+    function generateOutputModal(component, componentData) {
+        let rowsHTML = '';
+        const channels = component.config.channels;
+        const supportsPolaritySwitching = component.key === 'STAR-Light-V2' || component.key === 'STAR-Rover-4';
+
+        channels.forEach((channel, index) => {
+            const isDimmable = isChannelDimmable(component.key, index + 1);
+            const isDisabled = channel.isGroupMember;
+            
+            let functionOptions = '<option value="Not Set">Not Set</option><option value="On/Off">On/Off</option>';
+            if(isDimmable) {
+                functionOptions += `<option value="Dimmable Light">Dimmable Light</option>`;
+                if (component.key !== 'STAR-Power') {
+                    if (index + 2 <= componentData.channels) {
+                        functionOptions += `<option value="Dual Color Light">Dual Color Light</option>`;
+                    }
+                    if (index + 4 <= componentData.channels) {
+                        functionOptions += `<option value="RGBW Control">RGBW Control</option>`;
+                    }
+                    if (index % 2 === 0 && index + 1 < componentData.channels) {
+                         functionOptions += `<option value="H-Bridge Motor">H-Bridge Motor</option>`;
+                    }
+                }
+            }
+            
+            let polaritySelector = '<span>(+) Positive Only</span>';
+            if (supportsPolaritySwitching) {
+                polaritySelector = `
+                    <select class="channel-polarity w-full p-1 border rounded" data-index="${index}" ${isDisabled ? 'disabled' : ''}>
+                        <option value="+" ${channel.polarity === '+' ? 'selected' : ''}>(+) Positive</option>
+                        <option value="-" ${channel.polarity === '-' ? 'selected' : ''}>(-) Negative</option>
+                    </select>
+                `;
+            }
+
+            rowsHTML += `
+                <tr class="${isDisabled ? 'bg-gray-200 text-gray-500' : 'bg-white'}">
+                    <td class="p-2 border text-center">${index + 1}</td>
+                    <td class="p-2 border">
+                        <input type="text" class="channel-name w-full p-1 border rounded" value="${channel.customName}" data-index="${index}" ${isDisabled ? 'disabled' : ''}>
+                    </td>
+                    <td class="p-2 border">
+                        <select class="channel-function w-full p-1 border rounded" data-index="${index}" ${isDisabled ? 'disabled' : ''}>
+                           ${functionOptions}
+                        </select>
+                    </td>
+                    <td class="p-2 border">${polaritySelector}</td>
+                    <td class="p-2 border">
+                        <div class="flex items-center space-x-2">
+                             <input type="text" class="fuse-rating-input w-20 p-1 border rounded" value="${channel.fuseRating}" data-index="${index}" ${isDisabled ? 'disabled' : ''}>
+                             <button class="generate-fuse-btn gemini-btn p-1 rounded text-xs" data-index="${index}" ${isDisabled ? 'disabled' : ''}>✨</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">${component.name} - Configuration</h2>
+                <button class="close-modal-btn text-3xl font-bold hover:text-red-500">&times;</button>
+            </div>
+            <div class="overflow-y-auto flex-grow">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 font-semibold">
+                            <th class="p-2 border text-center">Ch</th>
+                            <th class="p-2 border">Custom Name</th>
+                            <th class="p-2 border">Function</th>
+                            <th class="p-2 border">Polarity</th>
+                            <th class="p-2 border">Fuse Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rowsHTML}</tbody>
+                </table>
+            </div>
+            <div class="mt-4 text-right">
+                <button class="close-modal-btn primary-orange text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-600">Done</button>
+            </div>
+        `;
+    }
+
+    function generateInputModal(component, componentData) {
+        let rowsHTML = '';
+        const outputChannels = getAvailableOutputChannels();
+
+        component.config.buttons.forEach((button, index) => {
+            let channelOptions = '<option value="">Not Linked</option>';
+            outputChannels.forEach(opt => {
+                const isSelected = button.linkedChannel && button.linkedChannel.moduleId === opt.moduleId && button.linkedChannel.channelIndex === opt.channelIndex;
+                channelOptions += `<option value="${opt.moduleId}-${opt.channelIndex}" ${isSelected ? 'selected' : ''}>${opt.label}</option>`;
+            });
+
+            rowsHTML += `
+                <tr class="bg-white">
+                    <td class="p-2 border">${index + 1}</td>
+                    <td class="p-2 border">
+                        <input type="text" class="button-name w-full p-1 border rounded" value="${button.customName}" data-index="${index}">
+                    </td>
+                    <td class="p-2 border">
+                        <select class="button-link w-full p-1 border rounded" data-index="${index}">
+                           ${channelOptions}
+                        </select>
+                    </td>
+                </tr>
+            `;
+        });
+
+        return `
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">${component.name} - Configuration</h2>
+                <button class="close-modal-btn text-3xl font-bold hover:text-red-500">&times;</button>
+            </div>
+            <div class="overflow-y-auto flex-grow">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="p-2 border w-16">Button</th>
+                            <th class="p-2 border">Custom Name</th>
+                            <th class="p-2 border">Linked Channel</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rowsHTML}</tbody>
+                </table>
+            </div>
+            <div class="mt-4 text-right">
+                <button class="close-modal-btn primary-orange text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-600">Done</button>
+            </div>
+        `;
+    }
+
+    function addModalEventListeners(componentId) {
+        document.querySelectorAll('.close-modal-btn').forEach(btn => btn.addEventListener('click', () => {
+             configModal.classList.add('hidden');
+             updateSummary();
+             renderCanvas();
+        }));
+
+        const component = appState.placedComponents.find(c => c.id === componentId);
+        if (!component) return;
+        
+        if (component.config.channels) {
+            component.config.channels.forEach((channel, index) => {
+                const select = modalContent.querySelector(`.channel-function[data-index='${index}']`);
+                if(select) select.value = channel.function;
+            });
         }
         
-        window.deleteLine = function(idx) {
-            const items = getCurrentLineItems();
-            items.splice(idx, 1);
-            renderLineItems(items);
+        modalContent.querySelectorAll('.channel-name').forEach(input => {
+            input.addEventListener('change', (e) => {
+                component.config.channels[e.target.dataset.index].customName = e.target.value;
+            });
+        });
+
+        modalContent.querySelectorAll('.channel-polarity').forEach(select => {
+            select.addEventListener('change', e => {
+                component.config.channels[e.target.dataset.index].polarity = e.target.value;
+                updateSummary();
+            });
+        });
+        
+        modalContent.querySelectorAll('.fuse-rating-input').forEach(input => {
+            input.addEventListener('change', (e) => {
+                component.config.channels[e.target.dataset.index].fuseRating = e.target.value;
+            });
+        });
+        
+        modalContent.querySelectorAll('.generate-fuse-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => generateFuseRating(e, componentId));
+        });
+
+        modalContent.querySelectorAll('.channel-function').forEach(select => {
+            select.addEventListener('change', (e) => handleFunctionChange(e, componentId));
+        });
+        modalContent.querySelectorAll('.button-name').forEach(input => {
+            input.addEventListener('change', (e) => {
+                component.config.buttons[e.target.dataset.index].customName = e.target.value;
+            });
+        });
+        modalContent.querySelectorAll('.button-link').forEach(select => {
+            select.addEventListener('change', (e) => {
+                const buttonIndex = e.target.dataset.index;
+                const [moduleId, channelIndex] = e.target.value.split('-').map(Number);
+                if (e.target.value) {
+                    component.config.buttons[buttonIndex].linkedChannel = { moduleId, channelIndex };
+                } else {
+                    component.config.buttons[buttonIndex].linkedChannel = null;
+                }
+                updateSummary();
+            });
+        });
+    }
+    
+    function handleFunctionChange(event, componentId) {
+        const index = parseInt(event.target.dataset.index);
+        const newFunction = event.target.value;
+        const component = appState.placedComponents.find(c => c.id === componentId);
+        
+        const resetOriginalFunction = () => {
+            event.target.value = component.config.channels[index].function;
+        }
+
+        clearGrouping(component, index);
+        let confirmed = true;
+        
+        if (newFunction === 'RGBW Control') {
+            const requiredChannels = [index + 1, index + 2, index + 3];
+            confirmed = confirm(`This will reserve and overwrite channels ${requiredChannels.map(i => i+1).join(', ')}. Continue?`);
+            if (confirmed) {
+                component.config.channels[index].function = newFunction;
+                const baseName = component.config.channels[index].customName;
+                const parts = ['(Green)', '(Blue)', '(White)'];
+                requiredChannels.forEach((chIndex, i) => {
+                    const ch = component.config.channels[chIndex];
+                    ch.isGroupMember = true;
+                    ch.function = `RGBW ${parts[i]}`;
+                    ch.customName = `${baseName} ${parts[i]}`;
+                    ch.fuseRating = "Grouped";
+                });
+            }
+        } else if (newFunction === 'H-Bridge Motor' || newFunction === 'Dual Color Light') {
+            const requiredChannel = index + 1;
+            const functionName = newFunction === 'H-Bridge Motor' ? 'reverse motor control' : 'the second light color';
+            confirmed = confirm(`This will reserve and overwrite channel ${requiredChannel + 1} for ${functionName}. Continue?`);
+            if (confirmed) {
+                 component.config.channels[index].function = newFunction;
+                 const ch = component.config.channels[requiredChannel];
+                 ch.isGroupMember = true;
+                 ch.function = newFunction === 'H-Bridge Motor' ? 'H-Bridge (Reverse)' : 'Dual Color (2)';
+                 ch.customName = `${component.config.channels[index].customName} (2)`;
+                 ch.fuseRating = "Grouped";
+            }
+        } else {
+             component.config.channels[index].function = newFunction;
+        }
+
+        if(!confirmed) {
+            resetOriginalFunction();
+            return;
+        }
+        
+        openConfigModal(componentId);
+    }
+    
+    function clearGrouping(component, index) {
+        const oldFunction = component.config.channels[index].function;
+        let channelsToClear = [];
+
+        if (oldFunction === 'RGBW Control') {
+            channelsToClear = [index + 1, index + 2, index + 3];
+        } else if (oldFunction === 'H-Bridge Motor' || oldFunction === 'Dual Color Light') {
+            channelsToClear = [index + 1];
+        }
+
+        channelsToClear.forEach(chIndex => {
+            if (component.config.channels[chIndex]) {
+                const ch = component.config.channels[chIndex];
+                ch.isGroupMember = false;
+                ch.function = 'Not Set';
+                ch.customName = `Channel ${chIndex + 1}`;
+                ch.fuseRating = 'N/A';
+            }
+        });
+    }
+
+    function isChannelDimmable(componentKey, channelNumber) {
+        const details = HARDWARE_COMPONENTS[componentKey].details;
+        if (details.all === 'dimmable') return true;
+        if (componentKey === 'STAR-Light-V2') {
+            return (channelNumber >= 1 && channelNumber <= 4) || (channelNumber >= 9 && channelNumber <= 12);
+        }
+        if (componentKey === 'STAR-Power') {
+            return channelNumber >= 7 && channelNumber <= 12;
+        }
+        return false;
+    }
+
+    function getChannelMaxFuse(componentKey, channelIndex) {
+        if (componentKey === 'STAR-Rover-4') return 15;
+        if (componentKey === 'STAR-Light-V2') return 10;
+        if (componentKey === 'STAR-Power') {
+            return (channelIndex < 6) ? 30 : 10;
+        }
+        return 0;
+    }
+
+    function getAvailableOutputChannels() {
+        const options = [];
+        appState.placedComponents.forEach(comp => {
+            if (comp.config.channels) {
+                comp.config.channels.forEach((channel, index) => {
+                    if (channel.function !== 'Not Set' && !channel.isGroupMember) {
+                        options.push({
+                            moduleId: comp.id,
+                            channelIndex: index,
+                            label: `${comp.name} - Ch ${index + 1}: ${channel.customName}`
+                        });
+                    }
+                });
+            }
+        });
+        return options;
+    }
+    
+    // --- IMPORT / EXPORT ---
+    function downloadConfiguration() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "boat_config.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+    
+    function uploadConfiguration(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const loadedState = JSON.parse(e.target.result);
+                if (loadedState.boatType && Array.isArray(loadedState.placedComponents)) {
+                    appState = loadedState;
+                    configTitle.textContent = `${file.name.replace('.json','')} (Loaded)`;
+                    selectBoat(appState.boatType);
+                    renderCanvas();
+                    updateSummary();
+                } else {
+                    alert('Invalid configuration file.');
+                }
+            } catch (error) {
+                console.error("Error parsing config file:", error);
+                alert("Could not read the configuration file. It may be corrupt.");
+            }
+        };
+        reader.readAsText(file);
+    }
+    
+    function downloadSummaryImage() {
+        const summaryPanel = document.getElementById('configSummary');
+        
+        summaryPanel.style.backgroundColor = 'white';
+        summaryPanel.style.padding = '20px';
+        
+        html2canvas(summaryPanel, {
+            scale: 2,
+            logging: true,
+            useCORS: true
+        }).then(canvas => {
+            summaryPanel.style.backgroundColor = '';
+            summaryPanel.style.padding = '';
+
+            const image = canvas.toDataURL("image/png", 1.0);
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", image);
+            downloadAnchorNode.setAttribute("download", "configuration_summary.png");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }).catch(err => {
+            console.error('oops, something went wrong!', err);
+            summaryPanel.style.backgroundColor = '';
+            summaryPanel.style.padding = '';
+        });
+    }
+
+    // --- GEMINI API INTEGRATION ---
+    async function callGemini(prompt, schema = null) {
+        const apiKey = "AIzaSyDtbtOo5xs7-IsnjghhswXyNOCMl2uRb4M"; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        
+        const payload = { 
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: schema ? { responseMimeType: "application/json", responseSchema: schema } : {}
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`API call failed: ${response.status}. Body: ${errorBody}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                return result.candidates[0].content.parts[0].text;
+            } else {
+                console.error("Unexpected API response:", result);
+                return JSON.stringify({ action: "ERROR", parameters: { message: "Could not generate content from the API response." } });
+            }
+        } catch (error) {
+            console.error("Error calling Gemini API:", error);
+            return JSON.stringify({ action: "ERROR", parameters: { message: error.message } });
+        }
+    }
+
+    async function generateFuseRating(event, componentId) {
+        const button = event.target;
+        const index = parseInt(button.dataset.index);
+        const component = appState.placedComponents.find(c => c.id === componentId);
+        if (!component) return;
+        
+        const channel = component.config.channels[index];
+        const channelName = channel.customName;
+        const channelFunction = channel.function;
+        const maxFuse = getChannelMaxFuse(component.key, index);
+
+        if (channelName.includes('Channel ') || channelFunction === 'Not Set') {
+            alert("Please provide a descriptive name and function first.");
+            return;
+        }
+
+        const prompt = `For a device named "${channelName}" used as "${channelFunction}" on a boat, suggest a DC fuse rating in Amps. The maximum for this specific hardware channel is ${maxFuse}A. The rating MUST NOT EXCEED ${maxFuse}A. Provide ONLY the rating as a string (e.g., "5A", "15A"), with no other text.`;
+        
+        button.innerText = '...';
+        button.disabled = true;
+
+        let suggestedRating = await callGemini(prompt);
+        
+        if (suggestedRating && !suggestedRating.startsWith("Error:")) {
+            let ratingValue = parseInt(suggestedRating) || 0;
+            if (ratingValue > maxFuse) {
+                ratingValue = maxFuse;
+            }
+            const finalRating = `${ratingValue}A`;
+            
+            const fuseInput = modalContent.querySelector(`.fuse-rating-input[data-index='${index}']`);
+            fuseInput.value = finalRating;
+            component.config.channels[index].fuseRating = finalRating;
+        } else {
+            alert("Failed to generate a fuse rating. Please try again.\n" + suggestedRating);
+        }
+        
+        button.innerText = '✨';
+        button.disabled = false;
+    }
+    
+    async function fetchManualContent() {
+        try {
+            const response = await fetch('./manual.html');
+            if(response.ok) {
+                const text = await response.text();
+                const doc = new DOMParser().parseFromString(text, 'text/html');
+                return doc.body.textContent || "";
+            }
+        } catch (e) {
+            console.warn("Could not fetch manual.html, using fallback summary.", e);
+        }
+        return `
+            Fallback Manual Summary:
+            - STAR-Light: 12x10A channels, some dimmable. Can be +/- switched. Supports 2x RGBW groups & Dual Color.
+            - STAR-Power: 6x30A (on/off) and 6x10A (dimmable). Positive switching only. Max 150A.
+            - STAR-Rover: 4x15A dimmable channels. Can be +/- switched. Supports 1x RGBW & Dual Color.
+            - Wiring: CAN bus requires a linear backbone with two 120-ohm terminators.
+        `;
+    }
+
+    async function generateWiringGuide() {
+        wiringGuideModal.classList.remove('hidden');
+        wiringGuideContent.innerHTML = '<p class="text-center">Analyzing configuration and consulting manual... please wait.</p>';
+
+        let configDetails = `Boat Type: ${appState.boatType}\n\nModules:\n`;
+        appState.placedComponents.forEach(comp => {
+            configDetails += `- ${comp.name} (${comp.key}) at location (${Math.round(comp.x)}%, ${Math.round(comp.y)}%)\n`;
+            if (comp.config.channels) {
+                comp.config.channels.forEach((ch, i) => {
+                    if (ch.function !== 'Not Set') {
+                        configDetails += `  - Channel ${i+1}: ${ch.customName} | Function: ${ch.function} | Polarity: ${ch.polarity} | Fuse: ${ch.fuseRating}\n`;
+                    }
+                });
+            }
+            if (comp.config.buttons) {
+                comp.config.buttons.forEach((btn, i) => {
+                    if(btn.linkedChannel) {
+                        const targetComp = appState.placedComponents.find(c => c.id === btn.linkedChannel.moduleId);
+                        if(targetComp) {
+                             const targetChannel = targetComp.config.channels[btn.linkedChannel.channelIndex];
+                             configDetails += `  - Button ${i+1}: ${btn.customName} controls ${targetComp.name} Ch ${btn.linkedChannel.channelIndex + 1} (${targetChannel.customName})\n`;
+                        }
+                    }
+                });
+            }
+        });
+
+        const manualContent = await fetchManualContent();
+        
+        const prompt = `You are an expert marine electrician AI assistant.
+        Your task is to generate a professional, step-by-step wiring guide.
+        You MUST use the OFFICIAL PRODUCT MANUAL content as the primary source of truth. Then, apply that knowledge to the USER'S SPECIFIC CONFIGURATION.
+        Use Markdown for clear formatting. The guide should be practical, safe, and easy to follow.
+        
+        --- OFFICIAL PRODUCT MANUAL (from manual.html) ---
+        ${manualContent}
+        
+        --- USER'S SPECIFIC CONFIGURATION ---
+        ${configDetails}
+        
+        --- WIRING GUIDE ---
+        Generate the guide based on the manual and the user's config.`;
+        
+        const guide = await callGemini(prompt);
+        wiringGuideContent.innerHTML = guide
+            .replace(/## (.*)/g, '<h2 class="text-xl font-bold mt-4 mb-2">$1</h2>')
+            .replace(/### (.*)/g, '<h3 class="text-lg font-semibold mt-3 mb-1">$1</h3>')
+            .replace(/\* \*(.*)\* \*/g, '<strong>$1</strong>')
+            .replace(/\* (.*)/g, '<li class="ml-4">$1</li>')
+            .replace(/\n/g, '<br>');
+    }
+
+    // --- AI COMMAND BAR LOGIC ---
+    async function handleAICommand() {
+        const query = aiCommandInput.value;
+        if (!query) return;
+
+        aiCommandBtn.disabled = true;
+        aiCommandBtn.innerText = '...';
+
+        const schema = {
+            type: "OBJECT",
+            properties: {
+                "action": { "type": "STRING", "enum": ["ADD_MODULE", "CONFIGURE_CHANNEL", "LINK_SWITCH", "ANSWER_QUESTION", "ERROR"] },
+                "parameters": { 
+                    "type": "OBJECT",
+                    "properties": {
+                        "componentKey": { "type": "STRING" },
+                        "locationName": { "type": "STRING" },
+                        "moduleName": { "type": "STRING" },
+                        "channelIndex": { "type": "NUMBER" },
+                        "loadName": { "type": "STRING" },
+                        "function": { "type": "STRING" },
+                        "switchName": { "type": "STRING" },
+                        "buttonIndex": { "type": "NUMBER" },
+                        "answer": { "type": "STRING" },
+                        "message": { "type": "STRING" }
+                    }
+                }
+            }
+        };
+
+        const prompt = `You are an intelligent command parser for a marine digital switching application. Your task is to interpret a user's natural language request and convert it into a single, structured JSON command that the application can execute. Be smart, infer intent, and use the provided context to make logical decisions.
+
+        --- CONTEXT: CURRENT SYSTEM STATE ---
+        - Boat Type: ${appState.boatType}
+        - Available Boat Zones: ${JSON.stringify(BOAT_ZONES[appState.boatType].map(z => z.name))}
+        - Hardware Library: ${JSON.stringify(HARDWARE_COMPONENTS)}
+        - Current Layout: ${JSON.stringify(appState.placedComponents.map(c => ({id: c.id, name: c.name, type: c.key, channels: c.config.channels?.map((ch, i) => ({index: i+1, name: ch.customName, function: ch.function})), buttons: c.config.buttons?.length})))}
+        
+        --- HEURISTICS FOR AN INTELLIGENT ASSISTANT ---
+        1.  **Adding Modules:** If the user wants to add a module (e.g., "add a star-light") but doesn't specify a location, default to the 'Saloon/Helm' or the most central zone. Match "componentKey" to one from the Hardware Library.
+        2.  **Adding Loads:** This is a **CONFIGURE_CHANNEL** action. The user will mention a load (e.g., "add deck lights", "wire up a bilge pump").
+            - If they specify a module ("...on the aft star-power"), use that module.
+            - If they DON'T specify a module, you MUST find the most suitable existing output module with a free channel.
+            - A free channel is one where the function is "Not Set".
+            - If no suitable modules with free channels exist, you MUST return an ERROR action with a helpful message.
+        3.  **Fuzzy Matching:** User input for names can be imprecise (e.g., 'star power', 'quad'). Match them to the closest name in the Hardware Library or Current Layout.
+        4.  **Error Handling:** If a command is ambiguous or impossible (e.g., 'add a light to a switch'), respond with a clear ERROR action and a helpful message.
+        
+        --- USER REQUEST ---
+        "${query}"
+
+        Now, determine the user's intent and provide the corresponding JSON object.
+        `;
+
+        const responseJson = await callGemini(prompt, schema);
+        let command;
+        try {
+            command = JSON.parse(responseJson);
+        } catch(e) {
+            command = { action: 'ERROR', parameters: { message: "Sorry, I had trouble parsing that command."}};
+        }
+
+        executeAICommand(command);
+
+        aiCommandInput.value = '';
+        aiCommandBtn.disabled = false;
+        aiCommandBtn.innerText = '✨ Go';
+    }
+
+    function executeAICommand(command) {
+        const { action, parameters } = command;
+        let message = "Action completed.";
+        
+        try {
+            switch (action) {
+                case 'ADD_MODULE':
+                    const zone = BOAT_ZONES[appState.boatType].find(z => z.name.toLowerCase() === (parameters.locationName?.toLowerCase() || 'saloon/helm'));
+                    const componentKey = Object.keys(HARDWARE_COMPONENTS).find(k => k.toLowerCase() === parameters.componentKey?.toLowerCase() || HARDWARE_COMPONENTS[k].name.toLowerCase() === parameters.componentKey?.toLowerCase());
+                    if (componentKey && zone) {
+                        const newComp = dropComponent(null, componentKey, zone.x, zone.y);
+                        message = `Added ${newComp.name} to the ${zone.name}.`;
+                    } else {
+                        throw new Error(`Could not find component '${parameters.componentKey}' or location '${parameters.locationName}'.`);
+                    }
+                    break;
+                
+                case 'CONFIGURE_CHANNEL':
+                    let targetModule;
+                    if (parameters.moduleName) {
+                        targetModule = findComponentByName(parameters.moduleName);
+                    } else {
+                        // Find first available output module
+                        targetModule = appState.placedComponents.find(c => c.config.channels && c.config.channels.some(ch => ch.function === 'Not Set'));
+                    }
+                    
+                    if(!targetModule) throw new Error(`No available channels found. Please add an output module first.`);
+                    
+                    let chIndex;
+                    if(parameters.channelIndex) {
+                        chIndex = parameters.channelIndex - 1;
+                    } else {
+                        chIndex = targetModule.config.channels.findIndex(ch => ch.function === 'Not Set');
+                    }
+
+                    if(chIndex < 0 || chIndex >= targetModule.config.channels.length) throw new Error(`Invalid or no available channel on ${targetModule.name}.`);
+
+                    targetModule.config.channels[chIndex].customName = parameters.loadName;
+                    if(parameters.function) {
+                         targetModule.config.channels[chIndex].function = parameters.function;
+                    } else {
+                        // Default to On/Off if not specified
+                        targetModule.config.channels[chIndex].function = 'On/Off';
+                    }
+                    message = `Configured '${parameters.loadName}' on Channel ${chIndex + 1} of ${targetModule.name}.`;
+                    break;
+
+                case 'LINK_SWITCH':
+                    const switchModule = findComponentByName(parameters.switchName);
+                    const loadModule = findComponentByName(parameters.moduleName);
+                    if(!switchModule || !loadModule) throw new Error(`Could not find switch '${parameters.switchName}' or module '${parameters.moduleName}'.`);
+                    
+                    const btnIndex = parameters.buttonIndex - 1;
+                    const loadChIndex = parameters.channelIndex - 1;
+
+                    if(btnIndex < 0 || btnIndex >= switchModule.config.buttons.length) throw new Error(`Invalid button number for ${switchModule.name}.`);
+                    if(loadChIndex < 0 || loadChIndex >= loadModule.config.channels.length) throw new Error(`Invalid channel number for ${loadModule.name}.`);
+
+                    switchModule.config.buttons[btnIndex].linkedChannel = { moduleId: loadModule.id, channelIndex: loadChIndex };
+                    message = `Linked ${switchModule.name} Button ${parameters.buttonIndex} to ${loadModule.name} Channel ${parameters.channelIndex}.`;
+                    break;
+
+                case 'ANSWER_QUESTION':
+                    message = parameters.answer;
+                    break;
+                
+                case 'ERROR':
+                    throw new Error(parameters.message || "An unknown error occurred.");
+
+                default:
+                    throw new Error("I understood the request, but I don't know how to perform that action yet.");
+            }
+        } catch (error) {
+            message = `Error: ${error.message}`;
+        }
+        
+        displayAIResponse(message);
+        renderCanvas();
+        updateSummary();
+    }
+    
+    function findComponentByName(name) {
+        if (!name) return null;
+        const lowerCaseName = name.toLowerCase();
+        return appState.placedComponents.find(c => c.name.toLowerCase() === lowerCaseName);
+    }
+
+    function displayAIResponse(message) {
+        aiResponseContent.innerHTML = `<p>${message}</p>`;
+        aiResponseModal.classList.remove('hidden');
+    }
+
+    // --- CAN-BUS DESIGN FUNCTIONS ---
+    function openCanBusDesigner() {
+        if (appState.placedComponents.length === 0) {
+            alert("Please place some components on the canvas first!");
+            return;
+        }
+        
+        // Filter CAN-bus capable devices only
+        const canBusDevices = appState.placedComponents.filter(comp => {
+            const compData = HARDWARE_COMPONENTS[comp.key];
+            return compData && compData.canBus === true;
+        });
+        
+        if (canBusDevices.length === 0 && !appState.hasNonCanBusOverride) {
+            const proceed = confirm(
+                "⚠️ No CAN-bus capable devices found!\n\n" +
+                "CAN-bus network is required for:\n" +
+                "• Victron Cerbo GX integration\n" +
+                "• CAN-bus switches (SP8)\n" +
+                "• System monitoring and control\n\n" +
+                "Only STAR modules (Light, Power, Rover) and SP8 switches support CAN-bus.\n" +
+                "Wireless switches (Quad-Switch/SP4) do NOT require CAN-bus.\n\n" +
+                "Do you want to continue anyway?"
+            );
+            
+            if (proceed) {
+                appState.hasNonCanBusOverride = true;
+            } else {
+                return;
+            }
+        }
+        
+        canBusModal.classList.remove('hidden');
+        renderCanBusCanvas();
+        updatePartsList();
+    }
+    
+    function renderCanBusCanvas() {
+        canBusCanvas.innerHTML = '';
+        
+        // Prevent default context menu on the canvas
+        canBusCanvas.oncontextmenu = (e) => {
+            e.preventDefault();
+            handleAddWaypoint(e);
+            return false;
         };
         
-        function updateSubtotal() {
-            const items = getCurrentLineItems();
-            const subtotal = items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
-            document.getElementById('quoteSubtotal').textContent = '$' + subtotal.toFixed(2);
+        // Add boat background image
+        const boatImage = BOAT_IMAGES[appState.boatType];
+        const placeholder = `https://placehold.co/800x600/f0f0f0/cccccc?text=${appState.boatType}+Layout`;
+        canBusCanvas.style.backgroundImage = `url('${boatImage}'), url('${placeholder}')`;
+        canBusCanvas.style.backgroundSize = 'contain';
+        canBusCanvas.style.backgroundRepeat = 'no-repeat';
+        canBusCanvas.style.backgroundPosition = 'center';
+        
+        const canvasRect = { width: canBusCanvas.offsetWidth, height: canBusCanvas.offsetHeight };
+        
+        // Filter to only CAN-bus capable devices
+        const canBusDevices = appState.placedComponents.filter(comp => {
+            const compData = HARDWARE_COMPONENTS[comp.key];
+            return compData && compData.canBus === true;
+        });
+        
+        // Render connections first (so they appear behind modules)
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.style.position = 'absolute';
+        svg.style.top = '0';
+        svg.style.left = '0';
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        svg.style.pointerEvents = 'none';
+        
+        appState.canBusPath.forEach((connection, connIdx) => {
+            const fromComp = appState.placedComponents.find(c => c.id === connection.from);
+            const toComp = appState.placedComponents.find(c => c.id === connection.to);
+            if (!fromComp || !toComp) return;
+            
+            const x1 = (fromComp.x / 100) * canvasRect.width;
+            const y1 = (fromComp.y / 100) * canvasRect.height;
+            const x2 = (toComp.x / 100) * canvasRect.width;
+            const y2 = (toComp.y / 100) * canvasRect.height;
+            
+            // Build path with waypoints
+            const waypoints = connection.waypoints || [];
+            let pathData = `M ${x1} ${y1}`;
+            
+            waypoints.forEach(wp => {
+                const wpX = (wp.x / 100) * canvasRect.width;
+                const wpY = (wp.y / 100) * canvasRect.height;
+                pathData += ` L ${wpX} ${wpY}`;
+            });
+            
+            pathData += ` L ${x2} ${y2}`;
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', pathData);
+            path.setAttribute('stroke', '#3b82f6');
+            path.setAttribute('stroke-width', '3');
+            path.setAttribute('fill', 'none');
+            svg.appendChild(path);
+            
+            // Calculate total distance with waypoints
+            const distance = calculateCableLengthWithWaypoints(fromComp, toComp, waypoints);
+            const displayLength = connection.manualLength !== null ? connection.manualLength : distance;
+            
+            // Add distance label at midpoint
+            let midX, midY;
+            if (waypoints.length > 0) {
+                const midIdx = Math.floor(waypoints.length / 2);
+                midX = (waypoints[midIdx].x / 100) * canvasRect.width;
+                midY = (waypoints[midIdx].y / 100) * canvasRect.height;
+            } else {
+                midX = (x1 + x2) / 2;
+                midY = (y1 + y2) / 2;
+            }
+            
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', midX);
+            text.setAttribute('y', midY - 5);
+            text.setAttribute('fill', '#1e40af');
+            text.setAttribute('font-size', '12');
+            text.setAttribute('font-weight', 'bold');
+            text.setAttribute('cursor', 'pointer');
+            text.setAttribute('data-connection-idx', connIdx);
+            text.textContent = `${displayLength.toFixed(1)}m`;
+            text.style.pointerEvents = 'auto';
+            text.addEventListener('click', (e) => {
+                e.stopPropagation();
+                editCableLength(connIdx, displayLength);
+            });
+            svg.appendChild(text);
+            
+            // Render waypoint markers
+            waypoints.forEach((wp, wpIdx) => {
+                const wpX = (wp.x / 100) * canvasRect.width;
+                const wpY = (wp.y / 100) * canvasRect.height;
+                
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', wpX);
+                circle.setAttribute('cy', wpY);
+                circle.setAttribute('r', '6');
+                circle.setAttribute('fill', '#fb923c');
+                circle.setAttribute('stroke', '#ea580c');
+                circle.setAttribute('stroke-width', '2');
+                circle.setAttribute('cursor', 'move');
+                circle.style.pointerEvents = 'auto';
+                circle.setAttribute('data-connection-idx', connIdx);
+                circle.setAttribute('data-waypoint-idx', wpIdx);
+                
+                makeWaypointDraggable(circle, connIdx, wpIdx);
+                svg.appendChild(circle);
+            });
+        });
+        
+        canBusCanvas.appendChild(svg);
+        
+        // Render modules (only CAN-bus capable)
+        canBusDevices.forEach(comp => {
+            const div = document.createElement('div');
+            div.className = 'absolute bg-blue-100 border-2 border-blue-500 rounded-lg p-2 text-center cursor-pointer hover:bg-blue-200';
+            div.style.left = `${comp.x}%`;
+            div.style.top = `${comp.y}%`;
+            div.style.transform = 'translate(-50%, -50%)';
+            div.innerHTML = `<div class="text-xs font-bold">${comp.name}</div>`;
+            div.dataset.id = comp.id;
+            
+            if (appState.isDrawingMode) {
+                div.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    handleCanvasClick(comp.id);
+                });
+            }
+            
+            canBusCanvas.appendChild(div);
+        });
+        
+        // Add instruction when in drawing mode
+        if (appState.isDrawingMode && selectedModuleId === null) {
+            const instruction = document.createElement('div');
+            instruction.className = 'absolute top-2 left-2 bg-purple-600 text-white px-3 py-2 rounded-lg text-sm shadow-lg';
+            instruction.innerHTML = '👆 Click modules to connect<br/>🖱️ Right-click near lines to add waypoints';
+            canBusCanvas.appendChild(instruction);
+        } else if (appState.isDrawingMode && selectedModuleId !== null) {
+            const instruction = document.createElement('div');
+            instruction.className = 'absolute top-2 left-2 bg-orange-600 text-white px-3 py-2 rounded-lg text-sm shadow-lg';
+            instruction.textContent = '👆 Click another module to complete connection';
+            canBusCanvas.appendChild(instruction);
+        } else if (!appState.isDrawingMode && appState.canBusPath.length > 0) {
+            const instruction = document.createElement('div');
+            instruction.className = 'absolute top-2 left-2 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm shadow-lg';
+            instruction.innerHTML = '🖱️ Right-click near cable lines to add routing waypoints<br/>📏 Click distance labels to edit lengths';
+            canBusCanvas.appendChild(instruction);
+        }
+    }
+    
+    let selectedModuleId = null;
+    
+    function handleCanvasClick(moduleId) {
+        if (!appState.isDrawingMode) return;
+        
+        if (selectedModuleId === null) {
+            selectedModuleId = moduleId;
+            // Highlight selected
+            const element = canBusCanvas.querySelector(`[data-id="${moduleId}"]`);
+            if (element) element.style.borderColor = '#ef4444';
+        } else {
+            if (selectedModuleId !== moduleId) {
+                // Check if connection already exists
+                const exists = appState.canBusPath.some(c => 
+                    (c.from === selectedModuleId && c.to === moduleId) ||
+                    (c.from === moduleId && c.to === selectedModuleId)
+                );
+                
+                if (!exists) {
+                    // DAISY CHAIN VALIDATION: Check if this connection would create a star topology
+                    const connectionCount = {};
+                    appState.placedComponents.forEach(comp => {
+                        const compData = HARDWARE_COMPONENTS[comp.key];
+                        if (compData && compData.canBus === true) {
+                            connectionCount[comp.id] = 0;
+                        }
+                    });
+                    
+                    // Count existing connections
+                    appState.canBusPath.forEach(conn => {
+                        connectionCount[conn.from] = (connectionCount[conn.from] || 0) + 1;
+                        connectionCount[conn.to] = (connectionCount[conn.to] || 0) + 1;
+                    });
+                    
+                    // Check if new connection would exceed 2 connections per device
+                    const fromCount = (connectionCount[selectedModuleId] || 0) + 1;
+                    const toCount = (connectionCount[moduleId] || 0) + 1;
+                    
+                    if (fromCount > 2 || toCount > 2) {
+                        alert(
+                            "❌ Invalid Connection!\n\n" +
+                            "CAN-bus requires DAISY CHAIN topology (linear), not star.\n\n" +
+                            "Each device can have maximum 2 connections:\n" +
+                            "• Endpoint devices: 1 connection\n" +
+                            "• Middle devices: 2 connections\n\n" +
+                            "Remove existing connections before adding new ones."
+                        );
+                        selectedModuleId = null;
+                        renderCanBusCanvas();
+                        return;
+                    }
+                    
+                    appState.canBusPath.push({ 
+                        from: selectedModuleId, 
+                        to: moduleId,
+                        waypoints: [],
+                        manualLength: null
+                    });
+                }
+            }
+            selectedModuleId = null;
+            renderCanBusCanvas();
+            updatePartsList();
+        }
+    }
+    
+    function toggleDrawMode() {
+        appState.isDrawingMode = !appState.isDrawingMode;
+        selectedModuleId = null;
+        toggleDrawModeBtn.textContent = appState.isDrawingMode ? '⸻ Stop Drawing' : '▶️ Start Drawing';
+        toggleDrawModeBtn.className = appState.isDrawingMode 
+            ? 'bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 w-full'
+            : 'bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 w-full';
+        renderCanBusCanvas();
+    }
+    
+    function clearCanBusPath() {
+        if (confirm("Clear all cable connections?")) {
+            appState.canBusPath = [];
+            selectedModuleId = null;
+            renderCanBusCanvas();
+            updatePartsList();
+        }
+    }
+    
+    function calculateCableLength(comp1, comp2) {
+        // Calculate Euclidean distance on canvas
+        const dx = comp1.x - comp2.x;
+        const dy = comp1.y - comp2.y;
+        const canvasDistance = Math.sqrt(dx * dx + dy * dy) / 100; // Normalize to 0-1
+        
+        // Scale to actual boat length (assuming canvas represents boat length)
+        // This is a diagonal, but for simplicity we'll use it as routing distance
+        const actualDistance = canvasDistance * appState.boatLength;
+        return actualDistance;
+    }
+    
+    function calculateCableLengthWithWaypoints(comp1, comp2, waypoints) {
+        let totalDistance = 0;
+        let prevPoint = { x: comp1.x, y: comp1.y };
+        
+        // Calculate through each waypoint
+        waypoints.forEach(wp => {
+            const dx = prevPoint.x - wp.x;
+            const dy = prevPoint.y - wp.y;
+            const segDistance = Math.sqrt(dx * dx + dy * dy) / 100;
+            totalDistance += segDistance * appState.boatLength;
+            prevPoint = wp;
+        });
+        
+        // Final segment to destination
+        const dx = prevPoint.x - comp2.x;
+        const dy = prevPoint.y - comp2.y;
+        const segDistance = Math.sqrt(dx * dx + dy * dy) / 100;
+        totalDistance += segDistance * appState.boatLength;
+        
+        return totalDistance;
+    }
+    
+    function editCableLength(connectionIdx, currentLength) {
+        const newLength = prompt(
+            `Edit cable length for this segment:\n\n` +
+            `Calculated: ${currentLength.toFixed(1)}m\n\n` +
+            `Enter new length (meters):`,
+            currentLength.toFixed(1)
+        );
+        
+        if (newLength !== null) {
+            const parsed = parseFloat(newLength);
+            if (!isNaN(parsed) && parsed > 0) {
+                appState.canBusPath[connectionIdx].manualLength = parsed;
+                renderCanBusCanvas();
+                updatePartsList();
+            } else {
+                alert("Please enter a valid positive number");
+            }
+        }
+    }
+    
+    function makeWaypointDraggable(circleElement, connIdx, wpIdx) {
+        let isDragging = false;
+        
+        circleElement.addEventListener('mousedown', (e) => {
+            e.stopPropagation();
+            isDragging = true;
+            
+            const onMouseMove = (moveEvent) => {
+                if (!isDragging) return;
+                
+                const canvasRect = canBusCanvas.getBoundingClientRect();
+                const newX = ((moveEvent.clientX - canvasRect.left) / canvasRect.width) * 100;
+                const newY = ((moveEvent.clientY - canvasRect.top) / canvasRect.height) * 100;
+                
+                appState.canBusPath[connIdx].waypoints[wpIdx] = {
+                    x: Math.max(0, Math.min(100, newX)),
+                    y: Math.max(0, Math.min(100, newY))
+                };
+                
+                renderCanBusCanvas();
+                updatePartsList();
+            };
+            
+            const onMouseUp = () => {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            };
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+        
+        // Right-click to delete waypoint
+        circleElement.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (confirm('Delete this waypoint?')) {
+                appState.canBusPath[connIdx].waypoints.splice(wpIdx, 1);
+                renderCanBusCanvas();
+                updatePartsList();
+            }
+        });
+    }
+    
+    function handleAddWaypoint(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        if (appState.canBusPath.length === 0) {
+            alert("No connections yet! Draw some connections first, then right-click to add routing waypoints.");
+            return;
         }
         
-        document.addEventListener('input', (e) => {
-            if (e.target.dataset.field === 'quantity') {
-                updateSubtotal();
+        const canvasRect = canBusCanvas.getBoundingClientRect();
+        const clickX = ((event.clientX - canvasRect.left) / canvasRect.width) * 100;
+        const clickY = ((event.clientY - canvasRect.top) / canvasRect.height) * 100;
+        
+        // Find the closest connection path
+        let closestConnection = null;
+        let minDistance = Infinity;
+        
+        appState.canBusPath.forEach((conn, idx) => {
+            const fromComp = appState.placedComponents.find(c => c.id === conn.from);
+            const toComp = appState.placedComponents.find(c => c.id === conn.to);
+            if (!fromComp || !toComp) return;
+            
+            // Calculate distance to the line segment (or waypoint segments)
+            const points = [
+                { x: fromComp.x, y: fromComp.y },
+                ...(conn.waypoints || []),
+                { x: toComp.x, y: toComp.y }
+            ];
+            
+            // Check distance to each segment
+            for (let i = 0; i < points.length - 1; i++) {
+                const p1 = points[i];
+                const p2 = points[i + 1];
+                
+                // Distance from point to line segment
+                const dist = distanceToLineSegment(
+                    { x: clickX, y: clickY },
+                    p1,
+                    p2
+                );
+                
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    closestConnection = idx;
+                }
             }
         });
         
-        function saveQuote() {
-            const name = document.getElementById('quoteNameInput').value.trim();
-            if (!name) return alert('Please enter a quote name');
-            
-            const items = getCurrentLineItems();
-            if (items.length === 0) return alert('Please add at least one line item');
-            
-            let existingQuote = null;
-            if (currentEditingQuote) {
-                existingQuote = quotes.find(q => q.id === currentEditingQuote);
+        // If click is within reasonable distance (20% of canvas)
+        if (closestConnection !== null && minDistance < 20) {
+            appState.canBusPath[closestConnection].waypoints.push({
+                x: clickX,
+                y: clickY
+            });
+            renderCanBusCanvas();
+            updatePartsList();
+        } else {
+            alert("Right-click closer to a cable line to add a waypoint!");
+        }
+    }
+    
+    // Helper function to calculate distance from point to line segment
+    function distanceToLineSegment(point, lineStart, lineEnd) {
+        const A = point.x - lineStart.x;
+        const B = point.y - lineStart.y;
+        const C = lineEnd.x - lineStart.x;
+        const D = lineEnd.y - lineStart.y;
+        
+        const dot = A * C + B * D;
+        const lenSq = C * C + D * D;
+        let param = -1;
+        
+        if (lenSq !== 0) param = dot / lenSq;
+        
+        let xx, yy;
+        
+        if (param < 0) {
+            xx = lineStart.x;
+            yy = lineStart.y;
+        } else if (param > 1) {
+            xx = lineEnd.x;
+            yy = lineEnd.y;
+        } else {
+            xx = lineStart.x + param * C;
+            yy = lineStart.y + param * D;
+        }
+        
+        const dx = point.x - xx;
+        const dy = point.y - yy;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    function updatePartsList() {
+        if (appState.canBusPath.length === 0) {
+            canBusPartsListContainer.innerHTML = '<p class="text-gray-500">Connect modules to generate parts list...</p>';
+            return;
+        }
+        
+        // Check if all CAN-bus devices are connected
+        const canBusDevices = appState.placedComponents.filter(comp => {
+            const compData = HARDWARE_COMPONENTS[comp.key];
+            return compData && compData.canBus === true;
+        });
+        
+        const connectedDevices = new Set([
+            ...appState.canBusPath.map(c => c.from), 
+            ...appState.canBusPath.map(c => c.to)
+        ]);
+        
+        const unconnectedDevices = canBusDevices.filter(dev => !connectedDevices.has(dev.id));
+        
+        let html = '<div class="space-y-4">';
+        
+        // Check daisy chain topology validity
+        const connectionCount = {};
+        canBusDevices.forEach(dev => {
+            connectionCount[dev.id] = 0;
+        });
+        
+        appState.canBusPath.forEach(conn => {
+            connectionCount[conn.from] = (connectionCount[conn.from] || 0) + 1;
+            connectionCount[conn.to] = (connectionCount[conn.to] || 0) + 1;
+        });
+        
+        // Verify it's a valid daisy chain (linear topology)
+        let isValidDaisyChain = true;
+        let invalidDevices = [];
+        Object.keys(connectionCount).forEach(deviceId => {
+            const count = connectionCount[deviceId];
+            if (count > 2) {
+                isValidDaisyChain = false;
+                const device = appState.placedComponents.find(c => c.id == deviceId);
+                if (device) invalidDevices.push(device.name);
             }
-            
-            const quote = {
-                id: currentEditingQuote || Date.now(),
-                name,
-                customerName: document.getElementById('customerNameInput').value,
-                boatName: document.getElementById('boatNameInput').value,
-                notes: document.getElementById('quoteNotesInput').value,
-                lineItems: items,
-                subtotal: items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0),
-                status: existingQuote ? existingQuote.status : 'draft',
-                createdAt: existingQuote ? existingQuote.createdAt : new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                configurationSnapshot: existingQuote ? existingQuote.configurationSnapshot : null,
-                diagrams: existingQuote ? existingQuote.diagrams : null
-            };
-            
-            if (currentEditingQuote) {
-                const idx = quotes.findIndex(q => q.id === currentEditingQuote);
-                quotes[idx] = quote;
+        });
+        
+        // Show topology validation
+        if (appState.canBusPath.length > 0) {
+            if (!isValidDaisyChain) {
+                html += '<div class="bg-red-50 border-2 border-red-500 p-3 rounded">';
+                html += '<h4 class="font-bold text-red-700 mb-2">❌ Invalid Topology - Star Connection Detected!</h4>';
+                invalidDevices.forEach(name => {
+                    html += `<div class="text-sm text-red-600">• ${name} has more than 2 connections</div>`;
+                });
+                html += '<div class="text-xs text-red-600 mt-2">CAN-bus requires LINEAR daisy chain topology. Remove connections to create a single chain.</div>';
+                html += '</div>';
             } else {
-                quotes.push(quote);
+                html += '<div class="bg-green-50 border-2 border-green-500 p-3 rounded">';
+                html += '<h4 class="font-bold text-green-700 mb-2">✅ Valid Daisy Chain Topology</h4>';
+                html += '<div class="text-xs text-green-600">Linear chain configuration is correct for NMEA 2000.</div>';
+                html += '</div>';
             }
-            
-            localStorage.setItem('safiery_quotes', JSON.stringify(quotes));
-            alert('Quote saved successfully!');
-            closeQuoteEditor();
-            renderQuotesList();
         }
         
-        function deleteQuote(id) {
-            if (!confirm('Delete this quote?')) return;
-            quotes = quotes.filter(q => q.id !== id);
-            localStorage.setItem('safiery_quotes', JSON.stringify(quotes));
-            renderQuotesList();
+        // Warning for unconnected devices
+        if (unconnectedDevices.length > 0 && !appState.hasNonCanBusOverride) {
+            html += '<div class="bg-red-50 border-2 border-red-500 p-3 rounded">';
+            html += '<h4 class="font-bold text-red-700 mb-2">⚠️ Unconnected Devices:</h4>';
+            unconnectedDevices.forEach(dev => {
+                html += `<div class="text-sm text-red-600">• ${dev.name} is not connected to the CAN-bus network</div>`;
+            });
+            html += '<div class="text-xs text-red-600 mt-2">All CAN-bus devices must be connected for the system to operate with Victron Cerbo GX.</div>';
+            html += '</div>';
         }
         
-        function downloadQuotePdf() {
-            const quote = getCurrentQuoteData();
-            if (!quote) return;
-            generatePDF(quote);
-        }
+        // Calculate each segment individually
+        let totalBackboneLength = 0;
+        const segments = [];
+        const allCablesNeeded = {}; // Track all cables needed across all segments
         
-        window.downloadQuotePdfById = function(id) {
-            const quote = quotes.find(q => q.id === id);
-            if (!quote) return;
-            generatePDF(quote);
-        };
-        
-        function getCurrentQuoteData() {
-            const name = document.getElementById('quoteNameInput').value.trim();
-            if (!name) {
-                alert('Please enter a quote name');
-                return null;
-            }
+        appState.canBusPath.forEach((connection, idx) => {
+            const fromComp = appState.placedComponents.find(c => c.id === connection.from);
+            const toComp = appState.placedComponents.find(c => c.id === connection.to);
+            if (!fromComp || !toComp) return;
             
-            const items = getCurrentLineItems();
-            if (items.length === 0) {
-                alert('Please add at least one line item');
-                return null;
-            }
+            const calculatedLength = calculateCableLengthWithWaypoints(fromComp, toComp, connection.waypoints || []);
+            const actualLength = connection.manualLength !== null ? connection.manualLength : calculatedLength;
+            totalBackboneLength += actualLength;
             
-            return {
-                id: currentEditingQuote || Date.now(),
-                name,
-                customerName: document.getElementById('customerNameInput').value,
-                boatName: document.getElementById('boatNameInput').value,
-                notes: document.getElementById('quoteNotesInput').value,
-                lineItems: items,
-                subtotal: items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0),
-                createdAt: new Date().toISOString()
-            };
-        }
-        
-        function generatePDF(quote) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            // Get cable suggestion for THIS segment
+            const segmentCables = suggestCableCombination(actualLength);
             
-            // Header
-            doc.setFontSize(24);
-            doc.setTextColor(58, 109, 174);
-            doc.text('SAFIERY', 20, 20);
-            
-            doc.setFontSize(10);
-            doc.setTextColor(100, 100, 100);
-            doc.text('Marine Electronics & Digital Switching Systems', 20, 27);
-            
-            // Quote Title
-            doc.setFontSize(18);
-            doc.setTextColor(0, 0, 0);
-            doc.text('QUOTATION', 150, 20);
-            
-            doc.setFontSize(10);
-            doc.text(`Quote #${quote.id}`, 150, 27);
-            doc.text(`Date: ${new Date(quote.createdAt).toLocaleDateString()}`, 150, 32);
-            
-            // Line
-            doc.setDrawColor(226, 131, 37);
-            doc.setLineWidth(1);
-            doc.line(20, 38, 190, 38);
-            
-            // Customer Info
-            let y = 50;
-            doc.setFontSize(11);
-            doc.setFont(undefined, 'bold');
-            doc.text('Customer Information:', 20, y);
-            doc.setFont(undefined, 'normal');
-            y += 6;
-            doc.text(`Name: ${quote.customerName || 'N/A'}`, 20, y);
-            y += 5;
-            doc.text(`Boat: ${quote.boatName || 'N/A'}`, 20, y);
-            y += 5;
-            if (quote.notes) {
-                doc.text(`Notes: ${quote.notes}`, 20, y);
-                y += 5;
-            }
-            
-            // Quote Name
-            y += 5;
-            doc.setFont(undefined, 'bold');
-            doc.setFontSize(12);
-            doc.text(quote.name, 20, y);
-            doc.setFont(undefined, 'normal');
-            doc.setFontSize(10);
-            
-            // Table Header
-            y += 10;
-            doc.setFillColor(243, 244, 246);
-            doc.rect(20, y, 170, 8, 'F');
-            doc.setFont(undefined, 'bold');
-            doc.text('SKU', 22, y + 5);
-            doc.text('Description', 60, y + 5);
-            doc.text('Qty', 135, y + 5);
-            doc.text('Unit Price', 150, y + 5);
-            doc.text('Total', 180, y + 5);
-            doc.setFont(undefined, 'normal');
-            
-            // Line Items
-            y += 8;
-            quote.lineItems.forEach(item => {
-                if (y > 270) {
-                    doc.addPage();
-                    y = 20;
-                }
-                
-                doc.text(item.sku, 22, y + 5);
-                
-                // Wrap long descriptions
-                const descLines = doc.splitTextToSize(item.description, 70);
-                doc.text(descLines, 60, y + 5);
-                
-                doc.text(item.quantity.toString(), 135, y + 5);
-                doc.text(`$${item.unitPrice.toFixed(2)}`, 150, y + 5);
-                doc.text(`$${(item.quantity * item.unitPrice).toFixed(2)}`, 180, y + 5);
-                
-                const lineHeight = Math.max(6, descLines.length * 5);
-                y += lineHeight;
-                
-                // Line separator
-                doc.setDrawColor(220, 220, 220);
-                doc.line(20, y, 190, y);
+            segments.push({
+                from: fromComp.name,
+                to: toComp.name,
+                length: actualLength,
+                isManual: connection.manualLength !== null,
+                cables: segmentCables
             });
             
-            // Subtotal
-            y += 10;
-            doc.setFont(undefined, 'bold');
-            doc.setFontSize(12);
-            doc.text('Subtotal:', 150, y);
-            doc.text(`$${quote.subtotal.toFixed(2)}`, 180, y);
-            
-            // Footer
-            y = 280;
-            doc.setFontSize(9);
-            doc.setFont(undefined, 'normal');
-            doc.setTextColor(100, 100, 100);
-            doc.text('Thank you for your business!', 105, y, { align: 'center' });
-            doc.text('Safiery Marine Electronics | www.safiery.com | info@safiery.com', 105, y + 5, { align: 'center' });
-            
-            // Save
-            doc.save(`Safiery_Quote_${quote.id}.pdf`);
-        }
+            // Add to total cable count
+            segmentCables.forEach(cable => {
+                if (!allCablesNeeded[cable.length]) {
+                    allCablesNeeded[cable.length] = 0;
+                }
+                allCablesNeeded[cable.length] += cable.quantity;
+            });
+        });
         
-        function convertToInvoice() {
-            if (!confirm('Convert to invoice and send to Safiery?')) return;
-            
-            alert('Invoice conversion triggered!\n\nIn production, this would:\n1. Create invoice in your system\n2. Send to Safiery\n3. Email customer\n4. Update status');
-            
-            if (currentEditingQuote) {
-                const quote = quotes.find(q => q.id === currentEditingQuote);
-                quote.status = 'invoice';
-                localStorage.setItem('safiery_quotes', JSON.stringify(quotes));
-            }
-        }
+        // Display segments with their individual cable requirements
+        html += '<div class="bg-blue-50 p-3 rounded"><h4 class="font-bold mb-2">Backbone Segments:</h4>';
+        segments.forEach((seg, idx) => {
+            const cableDesc = seg.cables.map(c => `${c.quantity}x ${c.length}m`).join(' + ');
+            const manualLabel = seg.isManual ? ' 📏' : '';
+            html += `<div class="text-sm">Segment ${idx + 1}: ${seg.from} → ${seg.to} <strong>(${seg.length.toFixed(1)}m${manualLabel})</strong> - ${cableDesc}</div>`;
+        });
+        html += `<div class="text-sm font-bold mt-2 border-t pt-2">Total Distance: ${totalBackboneLength.toFixed(1)}m</div>`;
+        html += '<div class="text-xs text-gray-600 mt-1">💡 Click on distance labels to edit lengths. Right-click lines to add routing waypoints.</div>';
+        html += '</div>';
         
-        function openInConfigurator() {
-            if (!currentEditingQuote) return;
-            
-            const quote = quotes.find(q => q.id === currentEditingQuote);
-            if (!quote || !quote.configurationSnapshot) {
-                alert('No configuration found for this quote');
+        // Display consolidated cable requirements
+        html += '<div class="bg-green-50 p-3 rounded mt-3"><h4 class="font-bold mb-2">Total Backbone Cables Needed:</h4>';
+        const sortedCables = Object.keys(allCablesNeeded)
+            .map(length => ({ length: parseInt(length), quantity: allCablesNeeded[length] }))
+            .sort((a, b) => b.length - a.length);
+        
+        sortedCables.forEach(cable => {
+            html += `<div class="text-sm">• ${cable.quantity}x ${cable.length}m cable</div>`;
+        });
+        html += '</div>';
+        
+        // Count devices (number of T-pieces needed)
+        const deviceCount = connectedDevices.size;
+        
+        html += '<div class="bg-yellow-50 p-3 rounded mt-3"><h4 class="font-bold mb-2">Additional Components:</h4>';
+        html += `<div class="text-sm">• ${deviceCount}x T-Pieces (one per device)</div>`;
+        html += `<div class="text-sm">• ${deviceCount}x 0.3m Dropper Cables</div>`;
+        html += `<div class="text-sm">• 2x 120Ω Terminating Resistors</div>`;
+        html += '</div>';
+        
+        html += '</div>';
+        canBusPartsListContainer.innerHTML = html;
+    }
+    
+    function suggestCableCombination(totalLength) {
+        // Available cables: 1m, 3m, 5m, 10m
+        // Cables have pre-installed connectors and CANNOT be cut
+        // We need to suggest cables that when connected reach AT LEAST the required length
+        
+        const availableCables = [10, 5, 3, 1];
+        let bestCombination = null;
+        let minCables = Infinity;
+        
+        // Try different combinations to find the one with fewest cables that meets the length
+        function tryBuild(currentLength, currentCombination, cableIndex) {
+            // If we've reached or exceeded the required length
+            if (currentLength >= totalLength) {
+                const totalCables = currentCombination.reduce((sum, c) => sum + c.quantity, 0);
+                if (totalCables < minCables) {
+                    minCables = totalCables;
+                    bestCombination = JSON.parse(JSON.stringify(currentCombination));
+                }
                 return;
             }
             
-            // Save configuration to temporary storage for the configurator to load
-            localStorage.setItem('tempLoadConfig', JSON.stringify(quote.configurationSnapshot));
+            // If we've tried all cable sizes, stop
+            if (cableIndex >= availableCables.length) return;
             
-            // Open configurator in new tab
-            window.open('index.html?loadTemp=true', '_blank');
+            const cableLength = availableCables[cableIndex];
+            
+            // Try adding 0 to N cables of this size
+            const maxNeeded = Math.ceil((totalLength - currentLength) / cableLength) + 2; // +2 for exploring alternatives
+            
+            for (let count = 0; count <= maxNeeded; count++) {
+                const newLength = currentLength + (cableLength * count);
+                const newCombination = [...currentCombination];
+                
+                if (count > 0) {
+                    const existingEntry = newCombination.find(c => c.length === cableLength);
+                    if (existingEntry) {
+                        existingEntry.quantity += count;
+                    } else {
+                        newCombination.push({ length: cableLength, quantity: count });
+                    }
+                }
+                
+                tryBuild(newLength, newCombination, cableIndex + 1);
+            }
         }
         
-        function viewDiagrams() {
-            if (!currentEditingQuote) return;
-            
-            const quote = quotes.find(q => q.id === currentEditingQuote);
-            console.log('Viewing diagrams for quote:', quote);
-            console.log('Has diagrams object?', !!quote.diagrams);
-            if (quote.diagrams) {
-                console.log('Has network diagram?', !!quote.diagrams.networkDiagram);
-                console.log('Has summary image?', !!quote.diagrams.summaryImage);
-            }
-            
-            if (!quote || !quote.diagrams) {
-                alert('No diagrams found for this quote.\n\nTip: Diagrams are automatically saved when you:\n1. Configure channels in the system\n2. Design the CAN-bus network\n3. Generate the quote');
-                return;
-            }
-            
-            const container = document.getElementById('diagramsContent');
-            let html = '';
-            let hasAnyDiagram = false;
-            
-            if (quote.diagrams.networkDiagram) {
-                hasAnyDiagram = true;
-                html += '<div class="border-2 border-gray-300 rounded-lg p-4 bg-white">';
-                html += '<h3 class="font-bold text-lg mb-2">🔌 CAN-Bus Network Diagram</h3>';
-                html += '<div class="overflow-auto">';
-                html += quote.diagrams.networkDiagram;
-                html += '</div>';
-                html += '</div>';
-            }
-            
-            if (quote.diagrams.summaryImage) {
-                hasAnyDiagram = true;
-                html += '<div class="border-2 border-gray-300 rounded-lg p-4 bg-white">';
-                html += '<h3 class="font-bold text-lg mb-2">📊 Configuration Summary</h3>';
-                html += `<img src="${quote.diagrams.summaryImage}" class="w-full" />`;
-                html += '</div>';
-            }
-            
-            if (!hasAnyDiagram) {
-                html = '<div class="text-center py-8">';
-                html += '<p class="text-gray-500 text-lg mb-4">📭 No diagrams available for this quote</p>';
-                html += '<p class="text-sm text-gray-600">Diagrams are automatically captured when generating quotes from the configurator if:</p>';
-                html += '<ul class="text-sm text-gray-600 mt-2 text-left max-w-md mx-auto">';
-                html += '<li class="mb-1">✅ Channels are configured on output modules</li>';
-                html += '<li class="mb-1">✅ CAN-bus network is designed and valid</li>';
-                html += '</ul>';
-                html += '</div>';
-            }
-            
-            container.innerHTML = html;
-            document.getElementById('diagramsModal').classList.remove('hidden');
+        tryBuild(0, [], 0);
+        
+        // Sort by cable length descending for better readability
+        if (bestCombination) {
+            bestCombination.sort((a, b) => b.length - a.length);
+            return bestCombination;
         }
         
-        init();
-    </script>
-<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="0a289f235e50cac5cfa48845-|49" defer></script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"d06d29c2f8824eeba59eab28f0766b58","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body>
-</html>
+        // Fallback: just use enough of the largest cables
+        const numLargest = Math.ceil(totalLength / availableCables[0]);
+        return [{ length: availableCables[0], quantity: numLargest }];
+    }
+    
+    async function generateNetworkDiagram() {
+        if (appState.canBusPath.length === 0) {
+            alert("Please create at least one connection first!");
+            return;
+        }
+        
+        // Build the network structure
+        const connectionCount = {};
+        const canBusDevices = appState.placedComponents.filter(comp => {
+            const compData = HARDWARE_COMPONENTS[comp.key];
+            return compData && compData.canBus === true;
+        });
+        
+        // Initialize connection count for all CAN-bus devices
+        canBusDevices.forEach(comp => {
+            connectionCount[comp.id] = 0;
+        });
+        
+        // Count connections
+        appState.canBusPath.forEach(conn => {
+            connectionCount[conn.from] = (connectionCount[conn.from] || 0) + 1;
+            connectionCount[conn.to] = (connectionCount[conn.to] || 0) + 1;
+        });
+        
+        console.log('Connection counts:', connectionCount);
+        
+        // Find devices that are actually connected (have at least 1 connection)
+        const connectedDeviceIds = Object.keys(connectionCount).filter(id => connectionCount[id] > 0);
+        
+        if (connectedDeviceIds.length === 0) {
+            alert("No devices are connected! Please connect your devices first.");
+            return;
+        }
+        
+        // For a valid linear chain, we need exactly 2 endpoints (devices with 1 connection)
+        const endpoints = connectedDeviceIds.filter(id => connectionCount[id] === 1);
+        const middleDevices = connectedDeviceIds.filter(id => connectionCount[id] === 2);
+        const invalidDevices = connectedDeviceIds.filter(id => connectionCount[id] > 2);
+        
+        console.log('Endpoints:', endpoints);
+        console.log('Middle devices:', middleDevices);
+        console.log('Invalid devices:', invalidDevices);
+        
+        if (invalidDevices.length > 0) {
+            alert("Invalid topology! Some devices have more than 2 connections (star topology). CAN-bus requires a linear daisy chain.");
+            return;
+        }
+        
+        if (endpoints.length !== 2) {
+            alert(`Invalid topology! A linear chain needs exactly 2 endpoints, but found ${endpoints.length}. Make sure all devices are connected in a single chain.`);
+            return;
+        }
+        
+        // Start from one endpoint
+        let startId = parseInt(endpoints[0]);
+        const visited = new Set();
+        
+        // Build ordered list of devices by walking the chain
+        const orderedDevices = [];
+        let currentId = startId;
+        
+        while (currentId !== null) {
+            const comp = appState.placedComponents.find(c => c.id === currentId);
+            if (!comp) {
+                console.error('Could not find component with id:', currentId);
+                break;
+            }
+            
+            visited.add(currentId);
+            
+            // Find the connection to the next device
+            const nextConnection = appState.canBusPath.find(conn => 
+                (conn.from === currentId && !visited.has(conn.to)) ||
+                (conn.to === currentId && !visited.has(conn.from))
+            );
+            
+            let connectionInfo = null;
+            
+            if (nextConnection) {
+                const nextId = nextConnection.from === currentId ? nextConnection.to : nextConnection.from;
+                const nextDevice = appState.placedComponents.find(c => c.id === nextId);
+                
+                if (nextDevice) {
+                    const calculatedLength = calculateCableLengthWithWaypoints(comp, nextDevice, nextConnection.waypoints || []);
+                    const length = nextConnection.manualLength !== null ? nextConnection.manualLength : calculatedLength;
+                    const cables = suggestCableCombination(length);
+                    
+                    connectionInfo = {
+                        length: length,
+                        cables: cables
+                    };
+                }
+                
+                // Move to next device
+                currentId = nextConnection.from === currentId ? nextConnection.to : nextConnection.from;
+            } else {
+                // No more connections - we've reached the end
+                currentId = null;
+            }
+            
+            orderedDevices.push({
+                device: comp,
+                nextConnection: connectionInfo
+            });
+        }
+        
+        console.log('Ordered devices:', orderedDevices);
+        
+        if (orderedDevices.length !== connectedDeviceIds.length) {
+            alert(`Warning: Only found ${orderedDevices.length} devices in chain, but ${connectedDeviceIds.length} devices are connected. The network might not be fully connected.`);
+        }
+        
+        // Generate SVG diagram
+        const svg = createWiringDiagramSVG(orderedDevices);
+        wiringDiagramContainer.innerHTML = '';
+        wiringDiagramContainer.appendChild(svg);
+        
+        // Show modal
+        wiringDiagramModal.classList.remove('hidden');
+    }
+    
+    function createWiringDiagramSVG(orderedDevices) {
+        const svgNS = "http://www.w3.org/2000/svg";
+        const deviceHeight = 100;
+        const spacing = 180; // Space between each device section
+        const backboneX = 400;
+        const startY = 120;
+        
+        // Calculate total height
+        const totalHeight = startY + (orderedDevices.length * spacing) + 300;
+        
+        const svg = document.createElementNS(svgNS, "svg");
+        svg.setAttribute("width", "900");
+        svg.setAttribute("height", totalHeight);
+        svg.setAttribute("viewBox", `0 0 900 ${totalHeight}`);
+        svg.style.backgroundColor = "#ffffff";
+        
+        // Add title
+        const title = document.createElementNS(svgNS, "text");
+        title.setAttribute("x", "450");
+        title.setAttribute("y", "40");
+        title.setAttribute("text-anchor", "middle");
+        title.setAttribute("font-size", "28");
+        title.setAttribute("font-weight", "bold");
+        title.setAttribute("fill", "#1e40af");
+        title.textContent = "NMEA 2000 CAN-Bus Wiring Diagram";
+        svg.appendChild(title);
+        
+        const subtitle = document.createElementNS(svgNS, "text");
+        subtitle.setAttribute("x", "450");
+        subtitle.setAttribute("y", "70");
+        subtitle.setAttribute("text-anchor", "middle");
+        subtitle.setAttribute("font-size", "16");
+        subtitle.setAttribute("fill", "#6b7280");
+        subtitle.textContent = `${appState.boatType} - ${appState.boatLength}m`;
+        svg.appendChild(subtitle);
+        
+        let currentY = startY;
+        
+        // Top terminator
+        drawTerminator(svg, backboneX, currentY, "120Ω Terminator (Start)");
+        currentY += 50;
+        
+        // Draw each device with T-piece and dropper
+        orderedDevices.forEach((item, idx) => {
+            const device = item.device;
+            const compData = HARDWARE_COMPONENTS[device.key];
+            
+            // Vertical line from previous element
+            const verticalLine = document.createElementNS(svgNS, "line");
+            verticalLine.setAttribute("x1", backboneX);
+            verticalLine.setAttribute("y1", currentY);
+            verticalLine.setAttribute("x2", backboneX);
+            verticalLine.setAttribute("y2", currentY + 30);
+            verticalLine.setAttribute("stroke", "#3b82f6");
+            verticalLine.setAttribute("stroke-width", "4");
+            svg.appendChild(verticalLine);
+            
+            currentY += 30;
+            
+            // Draw T-Piece
+            drawTPiece(svg, backboneX, currentY);
+            
+            // Draw dropper cable (horizontal line to device)
+            const dropperLine = document.createElementNS(svgNS, "line");
+            dropperLine.setAttribute("x1", backboneX);
+            dropperLine.setAttribute("y1", currentY);
+            dropperLine.setAttribute("x2", backboneX + 150);
+            dropperLine.setAttribute("y2", currentY);
+            dropperLine.setAttribute("stroke", "#f97316");
+            dropperLine.setAttribute("stroke-width", "3");
+            svg.appendChild(dropperLine);
+            
+            // Dropper label
+            const dropperLabel = document.createElementNS(svgNS, "text");
+            dropperLabel.setAttribute("x", backboneX + 75);
+            dropperLabel.setAttribute("y", currentY - 8);
+            dropperLabel.setAttribute("text-anchor", "middle");
+            dropperLabel.setAttribute("font-size", "11");
+            dropperLabel.setAttribute("fill", "#ea580c");
+            dropperLabel.textContent = "0.3m Dropper";
+            svg.appendChild(dropperLabel);
+            
+            // Draw device box
+            drawDevice(svg, backboneX + 150, currentY - 40, device.name, compData.name);
+            
+            // Draw backbone cable to next device (if exists)
+            if (item.nextConnection) {
+                const conn = item.nextConnection;
+                const cableDesc = conn.cables.map(c => `${c.quantity}×${c.length}m`).join(' + ');
+                
+                currentY += 30;
+                
+                // Backbone cable line
+                const backboneLine = document.createElementNS(svgNS, "line");
+                backboneLine.setAttribute("x1", backboneX);
+                backboneLine.setAttribute("y1", currentY);
+                backboneLine.setAttribute("x2", backboneX);
+                backboneLine.setAttribute("y2", currentY + 80);
+                backboneLine.setAttribute("stroke", "#3b82f6");
+                backboneLine.setAttribute("stroke-width", "4");
+                svg.appendChild(backboneLine);
+                
+                // Cable info box
+                const cableBox = document.createElementNS(svgNS, "rect");
+                cableBox.setAttribute("x", backboneX - 110);
+                cableBox.setAttribute("y", currentY + 20);
+                cableBox.setAttribute("width", "220");
+                cableBox.setAttribute("height", "45");
+                cableBox.setAttribute("fill", "#dbeafe");
+                cableBox.setAttribute("stroke", "#3b82f6");
+                cableBox.setAttribute("stroke-width", "2");
+                cableBox.setAttribute("rx", "5");
+                svg.appendChild(cableBox);
+                
+                const cableText1 = document.createElementNS(svgNS, "text");
+                cableText1.setAttribute("x", backboneX);
+                cableText1.setAttribute("y", currentY + 40);
+                cableText1.setAttribute("text-anchor", "middle");
+                cableText1.setAttribute("font-size", "13");
+                cableText1.setAttribute("font-weight", "bold");
+                cableText1.setAttribute("fill", "#1e40af");
+                cableText1.textContent = `${conn.length.toFixed(1)}m Backbone`;
+                svg.appendChild(cableText1);
+                
+                const cableText2 = document.createElementNS(svgNS, "text");
+                cableText2.setAttribute("x", backboneX);
+                cableText2.setAttribute("y", currentY + 57);
+                cableText2.setAttribute("text-anchor", "middle");
+                cableText2.setAttribute("font-size", "11");
+                cableText2.setAttribute("fill", "#1e40af");
+                cableText2.textContent = cableDesc;
+                svg.appendChild(cableText2);
+                
+                currentY += 80;
+            } else {
+                currentY += 30;
+            }
+        });
+        
+        // Final vertical line to bottom terminator
+        const finalLine = document.createElementNS(svgNS, "line");
+        finalLine.setAttribute("x1", backboneX);
+        finalLine.setAttribute("y1", currentY);
+        finalLine.setAttribute("x2", backboneX);
+        finalLine.setAttribute("y2", currentY + 30);
+        finalLine.setAttribute("stroke", "#3b82f6");
+        finalLine.setAttribute("stroke-width", "4");
+        svg.appendChild(finalLine);
+        
+        currentY += 30;
+        
+        // Bottom terminator
+        drawTerminator(svg, backboneX, currentY, "120Ω Terminator (End)");
+        
+        // Add legend/parts list
+        currentY += 80;
+        addPartsListToSVG(svg, 50, currentY, orderedDevices);
+        
+        return svg;
+    }
+    
+    function drawTerminator(svg, x, y, label) {
+        const svgNS = "http://www.w3.org/2000/svg";
+        
+        // Terminator symbol (resistor symbol)
+        const rect = document.createElementNS(svgNS, "rect");
+        rect.setAttribute("x", x - 30);
+        rect.setAttribute("y", y - 15);
+        rect.setAttribute("width", "60");
+        rect.setAttribute("height", "30");
+        rect.setAttribute("fill", "#fbbf24");
+        rect.setAttribute("stroke", "#f59e0b");
+        rect.setAttribute("stroke-width", "2");
+        rect.setAttribute("rx", "5");
+        svg.appendChild(rect);
+        
+        // Label
+        const text = document.createElementNS(svgNS, "text");
+        text.setAttribute("x", x);
+        text.setAttribute("y", y + 5);
+        text.setAttribute("text-anchor", "middle");
+        text.setAttribute("font-size", "11");
+        text.setAttribute("font-weight", "bold");
+        text.setAttribute("fill", "#92400e");
+        text.textContent = "120Ω";
+        svg.appendChild(text);
+        
+        const labelText = document.createElementNS(svgNS, "text");
+        labelText.setAttribute("x", x);
+        labelText.setAttribute("y", y + 35);
+        labelText.setAttribute("text-anchor", "middle");
+        labelText.setAttribute("font-size", "10");
+        labelText.setAttribute("fill", "#6b7280");
+        labelText.textContent = label;
+        svg.appendChild(labelText);
+    }
+    
+    function drawTPiece(svg, x, y) {
+        const svgNS = "http://www.w3.org/2000/svg";
+        
+        // T-Piece shape
+        const path = document.createElementNS(svgNS, "path");
+        path.setAttribute("d", `M ${x} ${y-15} L ${x} ${y+15} M ${x-15} ${y} L ${x+15} ${y}`);
+        path.setAttribute("stroke", "#6b7280");
+        path.setAttribute("stroke-width", "4");
+        path.setAttribute("stroke-linecap", "round");
+        svg.appendChild(path);
+        
+        // T-Piece circle
+        const circle = document.createElementNS(svgNS, "circle");
+        circle.setAttribute("cx", x);
+        circle.setAttribute("cy", y);
+        circle.setAttribute("r", "8");
+        circle.setAttribute("fill", "#9ca3af");
+        circle.setAttribute("stroke", "#6b7280");
+        circle.setAttribute("stroke-width", "2");
+        svg.appendChild(circle);
+    }
+    
+    function drawDevice(svg, x, y, deviceName, deviceType) {
+        const svgNS = "http://www.w3.org/2000/svg";
+        
+        // Device box
+        const rect = document.createElementNS(svgNS, "rect");
+        rect.setAttribute("x", x);
+        rect.setAttribute("y", y);
+        rect.setAttribute("width", "180");
+        rect.setAttribute("height", "80");
+        rect.setAttribute("fill", "#eff6ff");
+        rect.setAttribute("stroke", "#3b82f6");
+        rect.setAttribute("stroke-width", "2");
+        rect.setAttribute("rx", "8");
+        svg.appendChild(rect);
+        
+        // Device name
+        const nameText = document.createElementNS(svgNS, "text");
+        nameText.setAttribute("x", x + 90);
+        nameText.setAttribute("y", y + 30);
+        nameText.setAttribute("text-anchor", "middle");
+        nameText.setAttribute("font-size", "14");
+        nameText.setAttribute("font-weight", "bold");
+        nameText.setAttribute("fill", "#1e40af");
+        nameText.textContent = deviceName;
+        svg.appendChild(nameText);
+        
+        // Device type
+        const typeText = document.createElementNS(svgNS, "text");
+        typeText.setAttribute("x", x + 90);
+        typeText.setAttribute("y", y + 50);
+        typeText.setAttribute("text-anchor", "middle");
+        typeText.setAttribute("font-size", "11");
+        typeText.setAttribute("fill", "#6b7280");
+        typeText.textContent = deviceType;
+        svg.appendChild(typeText);
+    }
+    
+    function addPartsListToSVG(svg, x, y, orderedDevices) {
+        const svgNS = "http://www.w3.org/2000/svg";
+        
+        // Title
+        const title = document.createElementNS(svgNS, "text");
+        title.setAttribute("x", x);
+        title.setAttribute("y", y);
+        title.setAttribute("font-size", "16");
+        title.setAttribute("font-weight", "bold");
+        title.setAttribute("fill", "#1f2937");
+        title.textContent = "Parts List:";
+        svg.appendChild(title);
+        
+        y += 25;
+        
+        // Calculate all cables needed
+        const allCables = {};
+        orderedDevices.forEach(item => {
+            if (item.nextConnection) {
+                item.nextConnection.cables.forEach(cable => {
+                    if (!allCables[cable.length]) allCables[cable.length] = 0;
+                    allCables[cable.length] += cable.quantity;
+                });
+            }
+        });
+        
+        // Backbone cables
+        const sortedCables = Object.keys(allCables)
+            .map(len => ({ length: parseInt(len), qty: allCables[len] }))
+            .sort((a, b) => b.length - a.length);
+        
+        sortedCables.forEach((cable, idx) => {
+            const text = document.createElementNS(svgNS, "text");
+            text.setAttribute("x", x);
+            text.setAttribute("y", y + (idx * 20));
+            text.setAttribute("font-size", "12");
+            text.setAttribute("fill", "#374151");
+            text.textContent = `• ${cable.qty}× ${cable.length}m NMEA 2000 Backbone Cable`;
+            svg.appendChild(text);
+        });
+        
+        y += sortedCables.length * 20 + 10;
+        
+        // Other components
+        const components = [
+            `• ${orderedDevices.length}× T-Pieces`,
+            `• ${orderedDevices.length}× 0.3m Dropper Cables`,
+            `• 2× 120Ω Terminating Resistors`
+        ];
+        
+        components.forEach((comp, idx) => {
+            const text = document.createElementNS(svgNS, "text");
+            text.setAttribute("x", x);
+            text.setAttribute("y", y + (idx * 20));
+            text.setAttribute("font-size", "12");
+            text.setAttribute("fill", "#374151");
+            text.textContent = comp;
+            svg.appendChild(text);
+        });
+        
+        // Devices list
+        y += components.length * 20 + 20;
+        const devTitle = document.createElementNS(svgNS, "text");
+        devTitle.setAttribute("x", x);
+        devTitle.setAttribute("y", y);
+        devTitle.setAttribute("font-size", "14");
+        devTitle.setAttribute("font-weight", "bold");
+        devTitle.setAttribute("fill", "#1f2937");
+        devTitle.textContent = "Devices:";
+        svg.appendChild(devTitle);
+        
+        y += 20;
+        orderedDevices.forEach((item, idx) => {
+            const compData = HARDWARE_COMPONENTS[item.device.key];
+            const text = document.createElementNS(svgNS, "text");
+            text.setAttribute("x", x);
+            text.setAttribute("y", y + (idx * 20));
+            text.setAttribute("font-size", "12");
+            text.setAttribute("fill", "#374151");
+            text.textContent = `• ${item.device.name} (${compData.name})`;
+            svg.appendChild(text);
+        });
+    }
+    
+    function downloadDiagramAsPng() {
+        const svg = wiringDiagramContainer.querySelector('svg');
+        if (!svg) return;
+        
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+            
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'canbus_wiring_diagram.png';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        };
+        
+        img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+    }
+    
+    function downloadDiagramAsSvg() {
+        const svg = wiringDiagramContainer.querySelector('svg');
+        if (!svg) return;
+        
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const blob = new Blob([svgData], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'canbus_wiring_diagram.svg';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+    
+    // --- QUOTE GENERATION ---
+    function generateQuote() {
+        if (appState.placedComponents.length === 0) {
+            alert("Please place some components on the canvas first!");
+            return;
+        }
+        
+        const quoteName = prompt("Enter a name for this quote:", `${appState.boatType} Digital Switching System`);
+        if (!quoteName) return;
+        
+        const lineItems = [];
+        
+        // Add all placed components
+        const componentCounts = {};
+        appState.placedComponents.forEach(comp => {
+            const compData = HARDWARE_COMPONENTS[comp.key];
+            if (!componentCounts[comp.key]) {
+                componentCounts[comp.key] = 0;
+            }
+            componentCounts[comp.key]++;
+        });
+        
+        Object.keys(componentCounts).forEach(key => {
+            const compData = HARDWARE_COMPONENTS[key];
+            lineItems.push({
+                sku: compData.sku,
+                description: compData.name,
+                quantity: componentCounts[key],
+                unitPrice: compData.price
+            });
+        });
+        
+        // Add CAN-bus parts if network is configured
+        if (appState.canBusPath.length > 0) {
+            // Calculate cables needed
+            const allCablesNeeded = {};
+            appState.canBusPath.forEach(connection => {
+                const fromComp = appState.placedComponents.find(c => c.id === connection.from);
+                const toComp = appState.placedComponents.find(c => c.id === connection.to);
+                if (!fromComp || !toComp) return;
+                
+                const calculatedLength = calculateCableLengthWithWaypoints(fromComp, toComp, connection.waypoints || []);
+                const actualLength = connection.manualLength !== null ? connection.manualLength : calculatedLength;
+                const cables = suggestCableCombination(actualLength);
+                
+                cables.forEach(cable => {
+                    if (!allCablesNeeded[cable.length]) {
+                        allCablesNeeded[cable.length] = 0;
+                    }
+                    allCablesNeeded[cable.length] += cable.quantity;
+                });
+            });
+            
+            // Add cable line items
+            Object.keys(allCablesNeeded).forEach(length => {
+                const cableInfo = CABLE_PRICING[length];
+                if (cableInfo) {
+                    lineItems.push({
+                        sku: cableInfo.sku,
+                        description: cableInfo.name,
+                        quantity: allCablesNeeded[length],
+                        unitPrice: cableInfo.price
+                    });
+                }
+            });
+            
+            // Count CAN-bus devices for accessories
+            const canBusDevices = appState.placedComponents.filter(comp => {
+                const compData = HARDWARE_COMPONENTS[comp.key];
+                return compData && compData.canBus === true;
+            });
+            
+            const deviceCount = canBusDevices.length;
+            
+            if (deviceCount > 0) {
+                // T-Pieces (one per device)
+                lineItems.push({
+                    sku: ACCESSORIES_PRICING.tpiece.sku,
+                    description: ACCESSORIES_PRICING.tpiece.name,
+                    quantity: deviceCount,
+                    unitPrice: ACCESSORIES_PRICING.tpiece.price
+                });
+                
+                // Dropper cables (one per device)
+                lineItems.push({
+                    sku: ACCESSORIES_PRICING.dropper.sku,
+                    description: ACCESSORIES_PRICING.dropper.name,
+                    quantity: deviceCount,
+                    unitPrice: ACCESSORIES_PRICING.dropper.price
+                });
+                
+                // Terminators (one pair per network)
+                lineItems.push({
+                    sku: ACCESSORIES_PRICING.terminator.sku,
+                    description: ACCESSORIES_PRICING.terminator.name,
+                    quantity: 1,
+                    unitPrice: ACCESSORIES_PRICING.terminator.price
+                });
+                
+                // VE-CAN Kit (for Victron integration)
+                lineItems.push({
+                    sku: ACCESSORIES_PRICING.vecan.sku,
+                    description: ACCESSORIES_PRICING.vecan.name,
+                    quantity: 1,
+                    unitPrice: ACCESSORIES_PRICING.vecan.price
+                });
+            }
+        }
+        
+        // Calculate subtotal
+        const subtotal = lineItems.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
+        
+        // Create quote object
+        const quote = {
+            id: Date.now(),
+            name: quoteName,
+            customerName: '',
+            boatName: appState.boatType,
+            notes: `Generated from configurator. Boat length: ${appState.boatLength}m`,
+            lineItems: lineItems,
+            subtotal: subtotal,
+            status: 'draft',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            configurationSnapshot: JSON.parse(JSON.stringify(appState))
+        };
+        
+        // Save to localStorage
+        const quotes = JSON.parse(localStorage.getItem('safiery_quotes') || '[]');
+        quotes.push(quote);
+        localStorage.setItem('safiery_quotes', JSON.stringify(quotes));
+        
+        // Show confirmation and redirect
+        if (confirm(`Quote generated successfully!\n\nTotal: ${subtotal.toFixed(2)}\nItems: ${lineItems.length}\n\nGo to Quote Management?`)) {
+            window.location.href = 'quotes.html';
+        }
+    }
+
+    init();
+</script>
+
+<script defer="" src="./index_files/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;d06d29c2f8824eeba59eab28f0766b58&quot;,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
+
+</body></html> 
